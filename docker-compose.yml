@@ -1,0 +1,49 @@
+version: '2'
+
+services:
+  mysql:
+    build:
+      context: ./
+      dockerfile: dockerfiles/database
+    ports:
+      - "0.0.0.0:3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: dhdqdarj20192bd
+
+    networks:
+      network1:
+        ipv4_address: 172.10.0.2
+
+    restart: always
+
+  backend:
+    build:
+      context: ./
+      dockerfile: dockerfiles/backend
+    ports:
+      - "0.0.0.0:8081:8081"
+    networks:
+      network1:
+        ipv4_address: 172.10.0.3
+    links:
+      - "mysql:database"
+    restart: always
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: dockerfiles/frontend
+    ports:
+      - "80:80"
+    networks:
+      network1:
+        ipv4_address: 172.10.0.4
+    # links:
+    #   - "backend:api"
+    restart: always
+
+networks:
+  network1:
+      ipam:
+        config:
+          - subnet: 172.10.0.0/16
