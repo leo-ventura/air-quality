@@ -6,8 +6,7 @@ import os
 import sys
 
 from flask import Flask
-from src.util import conf
-from src.util import log_handler
+from src.util import logger
 from flask_cors import CORS
 
 '''
@@ -19,7 +18,7 @@ if __name__ == "__main__":
     app = Flask(__name__)
     CORS(app)
 
-    app.logger.addHandler(log_handler.get_handler())
+    app.logger.addHandler(logger.get_log_handler())
 
     @app.errorhandler(ConnectionError)
     def handle_connection_error(e):
