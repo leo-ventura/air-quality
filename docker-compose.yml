@@ -38,8 +38,8 @@ services:
     networks:
       network1:
         ipv4_address: 172.10.0.4
-    # links:
-    #   - "backend:api"
+    links:
+      - "backend:api"
     restart: always
 
 networks:
