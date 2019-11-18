@@ -1,1 +1,212 @@
-Qualidade do Ar!
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <title> Graph </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+body {
+  font-family: "Roboto", sans-serif;
+  overflow-y: scroll;
+}
+header {
+  max-width: 800px;
+  margin: 0 auto 2.5em;
+  padding: 1.5em 5em;
+  border-bottom: 2px solid #e5e5e5;
+}
+main {
+  max-width: 800px;
+  padding: 0 5em;
+  margin: 0 auto;
+}
+h1,h2 {
+  font-weight: normal;
+  margin-bottom: 0;
+}
+.subtitle {
+  display: inline-block;
+  color: #9090a0;
+  font-style: italic;
+}
+section {
+  margin-bottom: 5em;
+}
+h2 {
+  text-align: center;
+}
+figure {
+  max-width: 700px;
+  margin: 0 auto;
+}
+figcaption {
+  text-align: center;
+  font-style: italic;
+  color: #9090a0;
+  font-size: 85%;
+}
+#map {
+  height: 500px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+  </style>
+   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+</head>
+<body>
+  <header>
+    <h1> Análise da Qualidade do Ar </h1>
+    <p class="subtitle">
+      Além de características físico-químicas da atmosfera carioca
+    </p>
+  </header>
+  <main>
+    <section>
+      <p> Aqui está o mapa indicando todas as estações mapeadas </p>
+      <div id="map"></div>
+    </section>
+    <section>
+      <p>
+        O gráfico a seguir mostra as medições de temperatura do dia 1 de janeiro de 2011:
+      </p>
+      <h2> Temperatura (°C) </h2>
+      <figure>
+        <div id="chart-temperature"></div>
+        <figcaption>Fig. 1: Temperatura nas regiões de Copacabana e Centro</figcaption>
+      </figure>
+    </section>
+    <section>
+      <p>
+        Este mostra a concentração de gás ozônio:
+      </p>
+      <h2> O<sub>3</sub> (<sup>µg</sup>/<sub>m<sup>3</sup></sub>) </h2>
+      <figure>
+        <div id="chart"></div>
+        <figcaption>Fig. 2: Concentração de gás ozônio (O<sub>3</sub>) nas regiões de Copacabana e Centro</figcaption>
+      </figure>
+    </section>
+  </main>
+  <!-- Utilities -->
+  <script>
+function get(url,callback) {
+  const request = new XMLHttpRequest();
+  request.open("GET", url, true);
+  request.onload = callback;
+  request.send();
+}
+
+function xss(str) {
+  return (str+"")
+    .split("&").join("&amp;")
+    .split(">").join("&gt;")
+    .split("<").join("&lt;");
+}
+  </script>
+  <!-- Leaflet.js -->
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+  <script>
+// Create the map",
+const map = L.map("map").setView([-22.8879,-43.4711], 10);
+
+// Set up the OSM layer
+L.tileLayer(
+  //"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
+  //"http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
+  { maxZoom: 18 }
+).addTo(map);
+// Centro/Oeste
+L.circle([-22.92031434,-43.20270538], {radius: 6500}).addTo(map);
+// Centro/Sul
+L.circle([-22.88426087,-43.51203918], {radius: 5500}).addTo(map);
+// Zona Norte
+L.circle([-22.8316,-43.3268], {radius: 500}).addTo(map);
+// Zona Oeste
+L.circle([-23.0044,-43.629], {radius: 500}).addTo(map);
+
+function plotStationsToMap(data) {
+  data.forEach(e => {
+    const center = [e.Latitude, e.Longitude];
+    const circle = L.marker(center, 1000).addTo(map)
+      .bindPopup(`<b>${xss(e.SiglaLocal)}</b>`);
+  });
+}
+
+get("http://bd.amendo.im:8081/api/estacoes", function() {
+  if(this.status >= 200 && this.status < 400) {
+    const data = JSON.parse(this.response);
+    console.log(data);
+    plotStationsToMap(data);
+  }
+});
+  </script>
+  <!-- ApexCharts.js -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script>
+// TODO: Waiting for the API...
+/*const $chart_temperature = document.getElementById("chart-temperature");
+get("./api", function() {
+  if(this.status >= 200 && this.status < 400) {
+    const data = JSON.parse(this.response);
+    console.log(data);
+    plot(data);
+  }
+});
+
+function plot(data) {
+  const times = new Array(data.length).fill(0).map((e,index) => {
+    return `2011-01-01T${(index+"").padStart(2,"0")}:30:00Z`;
+  });
+
+  // apexcharts.com/docs/
+  const chart = new ApexCharts($chart_temperature,{
+    chart: {
+      type: "area",
+      toolbar: {
+        tools: {
+          zoom: false,
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+          reset: false
+        }
+      }
+    },
+    tooltip: {
+      x: {
+        show: true,
+        format: "HH:mm – dd/MM/yyyy",
+      }
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
+        stops: [0, 100, 100]
+      }
+    },
+    series: [ ...data ],
+    xaxis: {
+      type: "datetime",
+      categories: [ ...times ]
+    },
+    yaxis: {
+      labels: {
+        formatter: value => `${value} °C`
+      },
+    },
+  });
+  chart.render();
+}*/
+  </script>
+</body>
+</html>
