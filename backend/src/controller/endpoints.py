@@ -28,3 +28,48 @@ def get_estacoes():
     session.close()
 
     return json.dumps(data)
+
+@blueprint.route("/estacao", methods=['GET'])
+def get_estacao():
+    codigoEstacao = request.args.get("codigo")
+    siglaLocal    = request.args.get("siglaLocal")
+    latitude      = request.args.get("latitude")
+    longitude     = request.args.get("longitude")
+
+    logger.info(f'Buscando informações de sobre estacao')
+    logger.debug(f'Filtros: {codigoEstacao} {siglaLocal} {latitude} {longitude}')
+
+    session = get_session()
+
+    query = session.query(Estacao)
+    if codigoEstacao is not None:
+        query = query.filter(Estacao.Codigo == codigoEstacao)
+    if siglaLocal is not None:
+        query = query.filter(Estacao.SiglaLocal == siglaLocal)
+    if latitude is not None:
+        query = query.filter(Estacao.Latitude == latitude)
+    if longitude is not None:
+        query = query.filter(Estacao.Longitude == longitude)
+
+    logger.debug(f'Query: {str(query)}')
+
+    data = query.one()
+    data = data.format()
+
+    session.close()
+
+    return json.dumps(data)
+
+@blueprint.route("/analises", methods=['GET'])
+def get_analises():
+    logger.info("Buscando informações sobre as análises")
+
+    session = get_session()
+
+    data = session.query(Analise).all()
+    logger.debug(f'Quantidade de Analises: {len(data)}')
+    data = [d.format() for d in data]
+
+    session.close()
+
+    return json.dumps(data)
