@@ -3,3 +3,4 @@ Flask-Cors
 requests
 SQLAlchemy
 urllib3
+mysqlclient
