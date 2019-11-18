@@ -22,5 +22,22 @@ class Analise(Base):
     VelocidadeVento     = Column(Float)
     EstacaoCodigo       = Column(Integer, ForeignKey('Estacao.Codigo'))
 
-    def format():
-        return {}
+    def format(self):
+        return {
+            "Analise_id": f'{self.Analise_id}',
+            "CO": f'{self.CO}',
+            "CH4": f'{self.CH4}',
+            "NO": f'{self.NO}',
+            "NO2": f'{self.NO2}',
+            "NOx": f'{self.NOx}',
+            "PM_10": f'{self.PM_10}',
+            "PM_2_5": f'{self.PM_2_5}',
+            "Temperatura": f'{self.Temperatura}',
+            "Chuva": f'{self.Chuva}',
+            "Pressao": f'{self.Pressao}',
+            "RadiacaoSolar": f'{self.RadiacaoSolar}',
+            "UmidadeRelativaDoAr": f'{self.UmidadeRelativaDoAr}',
+            "DirecaoVento": f'{self.DirecaoVento}',
+            "VelocidadeVento": f'{self.VelocidadeVento}',
+            "EstacaoCodigo": f'{self.EstacaoCodigo}'
+        }
