@@ -22,6 +22,7 @@ services:
       dockerfile: dockerfiles/backend
     ports:
       - "0.0.0.0:8081:8081"
+      - "0.0.0.0:8081:8843"
     networks:
       network1:
         ipv4_address: 172.10.0.3
@@ -46,4 +47,4 @@ networks:
   network1:
       ipam:
         config:
-          - subnet: 172.10.0.0/16
+          - subnet: 172.10.0.0/8
