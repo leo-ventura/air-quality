@@ -9,14 +9,17 @@ class Estacao(Base):
     __tablename__ = 'Estacao'
     Codigo        = Column(Integer, primary_key=True)
     SiglaLocal    = Column(String)
+    NomeEstacao   = Column(String)
     Latitude      = Column(Numeric)
     Longitude     = Column(Numeric)
     Analises      = relationship('Analise')
+    QualidadeDoAr = relationship('QualidadeDoAr')
 
     def format(self):
         return {
-            "Codigo": f'{self.Codigo}',
-            "SiglaLocal": f'{self.SiglaLocal}',
-            "Latitude": f'{self.Latitude}',
-            "Longitude": f'{self.Longitude}'
+            "Codigo": self.Codigo,
+            "SiglaLocal": self.SiglaLocal,
+            "NomeEstacao": self.NomeEstacao,
+            "Latitude": self.Latitude,
+            "Longitude": self.Longitude
         }
