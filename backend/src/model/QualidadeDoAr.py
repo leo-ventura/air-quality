@@ -18,7 +18,7 @@ class QualidadeDoAr(Base):
         return {
             "ID": self.ID,
             "IQAR": self.IQAR,
-            "Data": self.Data,
+            "Data": f'{self.Data}',
             "Poluente": self.Poluente,
             "Classificacao": self.Classificacao,
             "SiglaLocalEstacao": self.SiglaLocalEstacao
