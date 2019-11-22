@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from src.model.base import Base
 
 class Analise(Base):
-    __tablename__ = 'Analise'
+    __tablename__       = 'Analise'
     Analise_id          = Column(Integer, primary_key=True)
     CO                  = Column(Float)
     CH4                 = Column(Float)
