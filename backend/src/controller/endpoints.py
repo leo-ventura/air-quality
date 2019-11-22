@@ -5,6 +5,7 @@ import sys
 from sqlalchemy.sql import text
 from flask import Blueprint
 from flask import request
+from flask import jsonify
 
 from src.util.logger import get_logger
 from src.util.mysqlConnector import get_session
@@ -24,12 +25,12 @@ def get_endpoints():
         "/estacao": "Recebe filtros via parametro e retorna a estacao correspondente",
         "/analises": "Retorna todas as analises disponiveis",
         "/analise": "Recebe filtros via parametro e retorna a(s) analise(s) correspondente(s)",
-        "/todasQualidadeDoAr": "Retorna todas as informacoes sobre as qualidades do ar relativas a poluentes",
+        "/todasQualidadeDoAr": "Retorna todas as informações sobre as qualidades do ar relativas a poluentes",
         "/qualidadeDoAr": "Recebe filtros e retorna informacoes sobre a(s) qualidade(s) do ar relativas ao filtro aplicado",
         "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrao do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
     }
 
-    return json.dumps(data)
+    return jsonify(data)
 
 
 @blueprint.route("/estacoes", methods=['GET'])
@@ -43,7 +44,7 @@ def get_estacoes():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
 
 @blueprint.route("/estacao", methods=['GET'])
 def get_estacao():
@@ -75,7 +76,7 @@ def get_estacao():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
 
 @blueprint.route("/analises", methods=['GET'])
 def get_analises():
@@ -89,7 +90,7 @@ def get_analises():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
 
 @blueprint.route("/analise", methods=['GET'])
 def get_analise():
@@ -156,7 +157,7 @@ def get_analise():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
 
 @blueprint.route("/todasQualidadeDoAr", methods=['GET'])
 def get_todas_qualidade_do_ar():
@@ -169,7 +170,7 @@ def get_todas_qualidade_do_ar():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
 
 @blueprint.route("/qualidadeDoAr", methods=['GET'])
 def get_qualidade_do_ar():
@@ -204,4 +205,4 @@ def get_qualidade_do_ar():
 
     session.close()
 
-    return json.dumps(data)
+    return jsonify(data)
