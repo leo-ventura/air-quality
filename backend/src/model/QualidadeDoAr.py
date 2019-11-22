@@ -13,6 +13,7 @@ class QualidadeDoAr(Base):
     Poluente          = Column(String)
     Classificacao     = Column(String)
     SiglaLocalEstacao = Column(String, ForeignKey('Estacao.SiglaLocal'))
+    Estacao           = relationship("Estacao")
 
     def format(self):
         return {
