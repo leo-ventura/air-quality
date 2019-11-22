@@ -17,9 +17,9 @@ class Estacao(Base):
 
     def format(self):
         return {
-            "Codigo": self.Codigo,
+            "Codigo": f'{self.Codigo}',
             "SiglaLocal": self.SiglaLocal,
             "NomeEstacao": self.NomeEstacao,
-            "Latitude": self.Latitude,
-            "Longitude": self.Longitude
+            "Latitude": f'{self.Latitude}',
+            "Longitude": f'{self.Longitude}'
         }
