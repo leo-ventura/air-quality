@@ -13,6 +13,7 @@ from src.util.mysqlConnector import get_session
 from src.model.Estacao import Estacao
 from src.model.Analise import Analise
 from src.model.QualidadeDoAr import QualidadeDoAr
+from src.model.Zona import Zona
 
 logger = get_logger(sys.argv[0])
 
@@ -21,13 +22,15 @@ blueprint = Blueprint("endpoints", __name__)
 @blueprint.route("/", methods=['GET'])
 def get_endpoints():
     data = {
-        "/estacoes": "Retorna todas as estacoes disponiveis",
-        "/estacao": "Recebe filtros via parametro e retorna a estacao correspondente",
-        "/analises": "Retorna todas as analises disponiveis",
-        "/analise": "Recebe filtros via parametro e retorna a(s) analise(s) correspondente(s)",
-        "/todasQualidadeDoAr": "Retorna todas as informações sobre as qualidades do ar relativas a poluentes",
-        "/qualidadeDoAr": "Recebe filtros e retorna informacoes sobre a(s) qualidade(s) do ar relativas ao filtro aplicado",
-        "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrao do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
+        "/estacoes": "Retorna todas as estações disponíveis",
+        "/estacao": "Recebe filtros via parâmetro e retorna a estação correspondente",
+        "/analises": "Retorna todas as anállses disponíveis",
+        "/analise": "Recebe filtros via parâmetro e retorna a(s) análise(s) correspondente(s)",
+        "/todasQualidadeDoAr": "Retorna todas as informações sobre qualidade do ar relativas a poluentes",
+        "/qualidadeDoAr": "Recebe filtros e retorna informações sobre a qualidade do ar relativa ao filtro aplicado",
+        "/zonas": "Retorna todas as zonas disponíveis",
+        "/zona": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado",
+        "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrão do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
     }
 
     return jsonify(data)
@@ -199,6 +202,55 @@ def get_qualidade_do_ar():
         query = query.filter(QualidadeDoAr.Classificacao == Classificacao)
     if SiglaLocalEstacao is not None:
         query = query.filter(QualidadeDoAr.SiglaLocalEstacao == SiglaLocalEstacao)
+
+    data = query.all()
+    data = [d.format() for d in data]
+
+    session.close()
+
+    return jsonify(data)
+
+@blueprint.route("/zonas", methods=['GET'])
+def get_zonas():
+    logger.info("Buscando informações sobre as zonas")
+
+    session = get_session()
+
+    data = session.query(Zona).all()
+    data = [d.format() for d in data]
+
+    session.close()
+
+    return jsonify(data)
+
+@blueprint.route("/zona", methods=['GET'])
+def get_zona():
+    logger.info(f'Buscando informações de sobre zona')
+
+    Zona_id = request.args.get("zona_id")
+    Nome = request.args.get("nome")
+    Raio = request.args.get("raio")
+    Latitude = request.args.get("latitude")
+    Longitude = request.args.get("longitude")
+
+    logger.debug(f'Filtros: {Zona_id} {Nome} {Raio} {Latitude} {Longitude}')
+
+    session = get_session()
+
+    query = session.query(Zona)
+
+    if Zona_id is not None:
+        query = query.filter(Zona.Zona_id == Zona_id)
+    if Nome is not None:
+        query = query.filter(Zona.Nome == Nome)
+    if Raio is not None:
+        query = query.filter(Zona.Raio == Raio)
+    if Latitude is not None:
+        query = query.filter(Zona.Latitude == Latitude)
+    if Longitude is not None:
+        query = query.filter(Zona.Longitude == Longitude)
+
+    logger.debug(f'Query: {str(query)}')
 
     data = query.all()
     data = [d.format() for d in data]
