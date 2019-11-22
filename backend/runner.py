@@ -18,6 +18,8 @@ if __name__ == "__main__":
     app = Flask(__name__)
     CORS(app)
 
+    app.config['JSON_AS_ASCII'] = False
+
     app.logger.addHandler(logger.get_log_handler())
 
     @app.errorhandler(ConnectionError)
