@@ -308,9 +308,10 @@ function plotStationsToMap(data) {
 function plotZonesToMap(data) {
   data.forEach(e => {
     // FIXME: API has Radius/Lat/Lon all swapped
-    const RADIUS = e.Longitude;
-    const LAT = e.Raio;
-    const LON = e.Latitude;
+    // Fixed! hihi
+    const RADIUS = e.Raio;
+    const LAT = e.Latitude;
+    const LON = e.Longitude;
     const center = [LAT, LON];
     L.circle(center, {radius: RADIUS}).addTo(map)
       .bindPopup(`Zona <b>${xss(e.Nome)}</b>`);
