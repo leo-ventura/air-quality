@@ -13,19 +13,19 @@ echo "[*] Stopping containers"
 docker-compose down
 check_error "Error while trying to stop containers"
 
-if [ $flag = "" ] || [ $flag = "mysql" ]; then
+if [[ $flag = "" ]] || [[ $flag = "mysql" ]]; then
     echo "[*] Rebuilding mysql"
     docker-compose build --no-cache mysql
     check_error "Error while trying to build mysql container"
 fi
 
-if [ $flag = "" ] || [ $flag = "backend" ]; then
+if [[ $flag = "" ]] || [[ $flag = "backend" ]]; then
     echo "[*] Rebuilding backend"
     docker-compose build --no-cache backend
     check_error "Error while trying to build backend container"
 fi
 
-if [ $flag = "" ] || [ $flag = "frontend" ]; then
+if [[ $flag = "" ]] || [[ $flag = "frontend" ]]; then
     echo "[*] Rebuilding frontend"
     docker-compose build --no-cache frontend
     check_error "Error while trying to build frontend container"
