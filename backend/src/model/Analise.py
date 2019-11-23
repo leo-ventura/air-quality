@@ -6,6 +6,7 @@ from src.model.base import Base
 class Analise(Base):
     __tablename__       = 'Analise'
     Analise_id          = Column(Integer, primary_key=True)
+    Data_e_hora         = Column(Date)
     CO                  = Column(Float)
     CH4                 = Column(Float)
     NO                  = Column(Float)
@@ -25,6 +26,7 @@ class Analise(Base):
     def format(self):
         return {
             "Analise_id": f'{self.Analise_id}',
+            "Data_e_hora": f'{self.Data_e_hora}',
             "CO": f'{self.CO}',
             "CH4": f'{self.CH4}',
             "NO": f'{self.NO}',

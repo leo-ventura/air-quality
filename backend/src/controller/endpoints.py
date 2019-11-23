@@ -22,14 +22,40 @@ blueprint = Blueprint("endpoints", __name__)
 @blueprint.route("/", methods=['GET'])
 def get_endpoints():
     data = {
-        "/estacoes": "Retorna todas as estações disponíveis",
-        "/estacao": "Recebe filtros via parâmetro e retorna a estação correspondente",
-        "/analises": "Retorna todas as anállses disponíveis",
-        "/analise": "Recebe filtros via parâmetro e retorna a(s) análise(s) correspondente(s)",
-        "/todasQualidadeDoAr": "Retorna todas as informações sobre qualidade do ar relativas a poluentes",
-        "/qualidadeDoAr": "Recebe filtros e retorna informações sobre a qualidade do ar relativa ao filtro aplicado",
-        "/zonas": "Retorna todas as zonas disponíveis",
-        "/zona": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado",
+        "endpoints": [
+            {
+                "url": "/estacoes",
+                "desc": "Retorna todas as estações disponíveis"
+            },
+            {
+                "url": "/estacao",
+                "desc": "Recebe filtros via parâmetro e retorna a estação correspondente"
+            },
+            {
+                "url": "/analises",
+                "desc": "Retorna todas as análises disponíveis"
+            },
+            {
+                "url": "/analise",
+                "desc": "Recebe filtros via parâmetro e retorna a(s) análise(s) correspondente(s)"
+            },
+            {
+                "url": "/todasQualidadeDoAr",
+                "desc": "Retorna todas as informações sobre qualidade do ar relativas a poluentes"
+            },
+            {
+                "url": "/qualidadeDoAr",
+                "desc": "Recebe filtros e retorna informações sobre a qualidade do ar relativa ao filtro aplicado"
+            },
+            {
+                "url": "/zonas",
+                "desc": "Retorna todas as zonas disponíveis"
+            },
+            {
+                "url": "/zona",
+                "desc": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado"
+            }
+        ]
         "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrão do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
     }
 
@@ -114,7 +140,7 @@ def get_analise():
     umidadeRelativaDoAr = request.args.get("umidadeRelativaDoAr")
     direcaoVento        = request.args.get("direcaoVento")
     velocidadeVento     = request.args.get("velocidadeVento")
-    estacaoCodigo       = request.args.get("estacaoCodigo")    
+    estacaoCodigo       = request.args.get("estacaoCodigo")
 
     session = get_session()
 

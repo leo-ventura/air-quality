@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
   <meta charset="utf-8">
-  <title> Graph </title>
+  <title> Análise da Qualidade do Ar Carioca </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
 body {
@@ -20,6 +20,13 @@ main {
   padding: 0 5em;
   margin: 0 auto;
 }
+footer {
+  max-width: 800px;
+  margin: 2.5em auto 0;
+  padding: 1.5em 5em;
+  border-top: 2px solid #e5e5e5;
+  color: #9090a0;
+}
 h1,h2 {
   font-weight: normal;
   margin-bottom: 0;
@@ -35,6 +42,16 @@ section {
 h2 {
   text-align: center;
 }
+fieldset {
+  color: #9090a0;
+  border: 2px solid #e4e4e7;
+}
+fieldset a:visited {
+  color: blue;
+}
+ol ol {
+  list-style: lower-alpha;
+}
 figure {
   max-width: 700px;
   margin: 0 auto;
@@ -45,10 +62,33 @@ figcaption {
   color: #9090a0;
   font-size: 85%;
 }
+dt {
+  font-weight: bold;
+}
+dd {
+  margin-inline-start: 0;
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
+  border-left: 2px solid #eee;
+  padding-left: 1em;
+}
 #map {
-  height: 500px;
+  height: 400px;
   max-width: 700px;
   margin: 0 auto;
+}
+@media screen and (max-width: 600px) {
+  header,main,footer {
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 80%;
+  }
+  section {
+    margin-bottom: 2.5em;
+  }
+  #map {
+    height: 300px;
+  }
 }
   </style>
    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -64,10 +104,123 @@ figcaption {
   </header>
   <main>
     <section>
-      <p> Aqui está o mapa indicando todas as estações mapeadas </p>
-      <div id="map"></div>
+      <p> Aqui está o mapa indicando todas as estações mapeadas: </p>
+      <figure>
+        <div id="map"></div>
+        <figcaption>
+          Fig. 1: Mapa com a localização das estações mapeadas e zonas as quais
+          pertencem
+        </figcaption>
+      </figure>
     </section>
     <section>
+      <fieldset>
+        <legend> Sumário </legend>
+        <nav>
+          <ol>
+            <li>
+              <a href="#iqar">
+                IQAR
+              </a>
+              <ol>
+                <li>
+                  <a href="#tijuca-o3">
+                    IQAR para poluente O<sub>3</sub>, na Tijuca
+                  </a>
+                </li>
+                <li>
+                  <a href="#tijuca-no2">
+                    IQAR para poluente NO<sub>2</sub>, na Tijuca
+                  </a>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </nav>
+      </fieldset>
+    </section>
+    <section id="iqar">
+      <h2> IQAR </h2>
+      <p>
+        IQAR é um valor numérico compreendido entre 0 e 300. Categoriza a
+        qualidade do ar nas seguintes seções:
+      </p>
+      <dl>
+        <dt>Boa</dt>
+        <dd>
+          IQAR na faixa 0–50;<br>
+          A qualidade do ar é satisfatória e apresenta pouco ou nenhum risco
+          para a saúde da população.
+        </dd>
+        <dt>Regular</dt>
+        <dd>
+          IQAR na faixa 51–100;<br>
+          Nesta faixa, a qualidade do ar é aceitável. Porém, as concentrações
+          existentes no ar podem causar uma preocupação moderada à saúde para
+          um número muito pequeno de indivíduos. Pessoas com extrema
+          sensibilidade ao ozônio e ao material particulado podem experimentar
+          problemas respiratórios.
+        </dd>
+        <dt>Inadequada</dt>
+        <dd>
+          IQAR na faixa 101–199;<br>
+          Os membros de grupos sensíveis podem ter efeitos na saúde, mas a
+          população em geral não é afetada. Pessoas com doença pulmonar,
+          doenças cardíacas, crianças e idosos são considerados como grupos
+          mais sensíveis e, portanto, de maior risco.
+        </dd>
+        <dt>Má</dt>
+        <dd>
+          IQAR na faixa 200–299;<br>
+          Toda a população começa a sentir os efeitos na saúde quando os
+          valores estão compreendidos nesta faixa.
+        </dd>
+        <dt>Péssima</dt>
+        <dd>
+          IQAR igual ou maior a 300;<br>
+          Quando estes valores são atingidos, deve ser dado um alerta à
+          população, pois todos podem experimentar efeitos na saúde.
+        </dd>
+      </dl>
+    </section>
+    <section id="tijuca-o3">
+      <p>
+        O gráfico a seguir mostra as 50 medições mais recentes do IQAR para
+        O<sub>3</sub>, medido na estação da Tijuca.
+      </p>
+      <h2> IQAR para poluente O<sub>3</sub> </h2>
+      <figure>
+        <div id="chart-ozone"></div>
+        <figcaption>
+          Fig. 2: Índice de Qualidade do Ar para o poluente O<sub>3</sub>
+          (ozônio), como medido na estação da Tijuca
+        </figcaption>
+      </figure>
+      <p>
+        Percebe-se picos, porém nenhuma medição fica acima do nível "Regular". A
+        qualidade do ar é aceitável.
+      </p>
+    </section>
+    <section id="tijuca-no2">
+      <p>
+        Este gráfico, por sua vez, mostra a variação das últimas 50 medições de
+        IQAR para o poluente NO<sub>2</sub>, como medido na estação da Tijuca.
+      </p>
+      <h2> IQAR para poluente NO<sub>2</sub> </h2>
+      <figure>
+        <div id="chart-nitrogen"></div>
+        <figcaption>
+          Fig. 2: Índice de Qualidade do Ar para o poluente NO<sub>2</sub>
+          (dióxido de nitrogênio), como medido na estação da Tijuca
+        </figcaption>
+      </figure>
+      <p>
+        Para NO<sub>2</sub>, o maior índice alcançado ocorre no dia 13 de junho
+        de 2018, quando atinge um nível de 61. Contudo, esse nível continua sob
+        a faixa "Regular", e é portanto aceitável.
+      </p>
+    </section>
+<!--     <section>
       <p>
         O gráfico a seguir mostra as medições de temperatura do dia 1 de janeiro de 2011:
       </p>
@@ -76,18 +229,15 @@ figcaption {
         <div id="chart-temperature"></div>
         <figcaption>Fig. 1: Temperatura nas regiões de Copacabana e Centro</figcaption>
       </figure>
-    </section>
-    <section>
-      <p>
-        Este mostra a concentração de gás ozônio:
-      </p>
-      <h2> O<sub>3</sub> (<sup>µg</sup>/<sub>m<sup>3</sup></sub>) </h2>
-      <figure>
-        <div id="chart"></div>
-        <figcaption>Fig. 2: Concentração de gás ozônio (O<sub>3</sub>) nas regiões de Copacabana e Centro</figcaption>
-      </figure>
-    </section>
+    </section> -->
   </main>
+  <footer>
+    <p>
+      Feito com carinho por alunos da turma de 2019.2 da disciplina de Banco de
+      Dados I da UFRJ!<br>O código-fonte deste projeto está
+      <a href="https://github.com/leo-ventura/air-quality">disponível no GitHub</a>.
+    </p>
+  </footer>
   <!-- Utilities -->
   <script>
 function get(url,callback) {
@@ -109,7 +259,9 @@ function xss(str) {
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
    crossorigin=""></script>
   <script>
-// Create the map",
+const API = "http://bd.amendo.im:8081/api";
+
+// Create the map
 const map = L.map("map").setView([-22.8879,-43.4711], 10);
 
 // Set up the OSM layer
@@ -119,94 +271,133 @@ L.tileLayer(
   //"http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
   { maxZoom: 18 }
 ).addTo(map);
-// Centro/Oeste
-L.circle([-22.92031434,-43.20270538], {radius: 6500}).addTo(map);
-// Centro/Sul
-L.circle([-22.88426087,-43.51203918], {radius: 5500}).addTo(map);
-// Zona Norte
-L.circle([-22.8316,-43.3268], {radius: 500}).addTo(map);
-// Zona Oeste
-L.circle([-23.0044,-43.629], {radius: 500}).addTo(map);
 
-function plotStationsToMap(data) {
-  data.forEach(e => {
-    const center = [e.Latitude, e.Longitude];
-    const circle = L.marker(center, 1000).addTo(map)
-      .bindPopup(`<b>${xss(e.SiglaLocal)}</b>`);
-  });
-}
-
-get("http://bd.amendo.im:8081/api/estacoes", function() {
-  if(this.status >= 200 && this.status < 400) {
+// Get station data
+get(API+"/estacoes", function() {
+  if(ok(this.status)) {
     const data = JSON.parse(this.response);
     console.log(data);
     plotStationsToMap(data);
   }
 });
+
+// Get zone data
+get(API+"/zonas", function() {
+  if(ok(this.status)) {
+    const data = JSON.parse(this.response);
+    console.log(data);
+    plotZonesToMap(data);
+  }
+});
+
+function ok(status) {
+  return status >= 200 && status < 400;
+}
+
+const stations = {};
+
+function plotStationsToMap(data) {
+  data.forEach(e => {
+    const center = [e.Latitude, e.Longitude];
+    const circle = L.marker(center, 1000).addTo(map)
+      .bindPopup(`<b>${xss(e.SiglaLocal)}</b><br>${xss(e.NomeEstacao)}`);
+    stations[e.SiglaLocal] = e.NomeEstacao;
+  });
+}
+
+function plotZonesToMap(data) {
+  data.forEach(e => {
+    // FIXME: API has Radius/Lat/Lon all swapped
+    const RADIUS = e.Longitude;
+    const LAT = e.Raio;
+    const LON = e.Latitude;
+    const center = [LAT, LON];
+    L.circle(center, {radius: RADIUS}).addTo(map)
+      .bindPopup(`Zona <b>${xss(e.Nome)}</b>`);
+  });
+}
   </script>
   <!-- ApexCharts.js -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script>
-// TODO: Waiting for the API...
-/*const $chart_temperature = document.getElementById("chart-temperature");
-get("./api", function() {
+const $chart_ozone = document.getElementById("chart-ozone");
+const $chart_nitrogen = document.getElementById("chart-nitrogen");
+
+get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
   if(this.status >= 200 && this.status < 400) {
     const data = JSON.parse(this.response);
     console.log(data);
-    plot(data);
+    plot(
+      data.slice(-50),
+      $chart_ozone,
+      "Data",
+      "IQAR",
+      "IQAR O<sub>3</sub>",
+      (value) => `${value} / 300`
+    );
+  }
+});
+get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=NO2", function() {
+  if(this.status >= 200 && this.status < 400) {
+    const data = JSON.parse(this.response);
+    console.log(data);
+    plot(
+      data.slice(-50),
+      $chart_nitrogen,
+      "Data",
+      "IQAR",
+      "IQAR NO<sub>2</sub>",
+      (value) => `${value} / 300`
+    );
   }
 });
 
-function plot(data) {
-  const times = new Array(data.length).fill(0).map((e,index) => {
-    return `2011-01-01T${(index+"").padStart(2,"0")}:30:00Z`;
-  });
+function plot(data,element,x,y,series_name,formatter) {
+  const times = data.map(e => e[x]);
+  const values = data.map(e => e[y]);
 
   // apexcharts.com/docs/
-  const chart = new ApexCharts($chart_temperature,{
-    chart: {
-      type: "area",
-      toolbar: {
-        tools: {
-          zoom: false,
-          zoomin: false,
-          zoomout: false,
-          pan: false,
-          reset: false
-        }
-      }
-    },
+  const chart = new ApexCharts(element, {
+    chart: {  type: "area", toolbar: preventZoomConfig  },
     tooltip: {
       x: {
         show: true,
         format: "HH:mm – dd/MM/yyyy",
       }
     },
-    dataLabels: {
-      enabled: false,
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.9,
-        stops: [0, 100, 100]
-      }
-    },
-    series: [ ...data ],
+    dataLabels: {  enabled: false,  },
+    fill: gradientConfig,
+    series: [{
+      name: series_name,
+      data: [...values]
+    }],
     xaxis: {
       type: "datetime",
       categories: [ ...times ]
     },
-    yaxis: {
-      labels: {
-        formatter: value => `${value} °C`
-      },
-    },
+    yaxis: {  labels: { formatter: formatter }  }
   });
   chart.render();
-}*/
+}
+
+const preventZoomConfig = {
+  tools: {
+    zoom: false,
+    zoomin: false,
+    zoomout: false,
+    pan: false,
+    reset: false
+  }
+};
+const gradientConfig = {
+  type: "gradient",
+  gradient: {
+    shadeIntensity: 1,
+    opacityFrom: 0.7,
+    opacityTo: 0.9,
+    stops: [0, 100, 100]
+  }
+};
   </script>
 </body>
 </html>
