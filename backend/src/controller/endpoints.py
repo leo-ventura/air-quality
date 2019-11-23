@@ -19,6 +19,8 @@ logger = get_logger(sys.argv[0])
 
 blueprint = Blueprint("endpoints", __name__)
 
+LIMIT = 200
+
 @blueprint.route("/", methods=['GET'])
 def get_endpoints():
     data = {
@@ -55,7 +57,7 @@ def get_endpoints():
                 "url": "/zona",
                 "desc": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado"
             }
-        ]
+        ],
         "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrão do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
     }
 
@@ -113,7 +115,7 @@ def get_analises():
 
     session = get_session()
 
-    data = session.query(Analise).all()
+    data = session.query(Analise).limit(LIMIT).all()
     logger.debug(f'Quantidade de Analises: {len(data)}')
     data = [d.format() for d in data]
 
@@ -179,10 +181,12 @@ def get_analise():
     if estacaoCodigo is not None:
         query = query.filter(Analise.EstacaoCodigo == estacaoCodigo)
 
-    logger.debug(f'Query: {str(query)}')
+    logger.debug(f'Query: {query}')
 
-    data = query.all()
+    data = query.limit(LIMIT).all()
     data = [d.format() for d in data]
+
+    logger.debug(f'Quantidade de análises: {len(data)}')
 
     session.close()
 
