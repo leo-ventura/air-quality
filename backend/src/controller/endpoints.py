@@ -3,12 +3,14 @@ import json
 import sys
 
 from sqlalchemy.sql import text
+from sqlalchemy.sql import func
 from flask import Blueprint
 from flask import request
 from flask import jsonify
 
 from src.util.logger import get_logger
 from src.util.mysqlConnector import get_session
+from src.util.stringUtility import str_to_class
 
 from src.model.Estacao import Estacao
 from src.model.Analise import Analise
@@ -56,6 +58,18 @@ def get_endpoints():
             {
                 "url": "/zona",
                 "desc": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado"
+            },
+            {
+                "url": "/avg",
+                "desc": "Recebe o nome da tabela e o campo a retorna a média. Exemplo: /avg?tabela=Analise&coluna=CO"
+            },
+            {
+                "url": "/max",
+                "desc": "Recebe o nome da tabela e o campo a retorna o valor máximo. Exemplo: /max?tabela=Analise&coluna=CO"
+            },
+            {
+                "url": "/min",
+                "desc": "Recebe o nome da tabela e o campo a retorna o valor mínimo. Exemplo: /min?tabela=Analise&coluna=CO"
             }
         ],
         "OBS": "Para todos endpoints que recebem filtro, o mesmo segue o padrão do nome da coluna no banco de dados. Exemplo: /analise?CO=0.6. Para colunas que o nome seja uma palavra, comece com letra minúscula. Exemplo: /qualidadeDoAr?siglaLocalEstacao=AV"
@@ -286,5 +300,84 @@ def get_zona():
     data = [d.format() for d in data]
 
     session.close()
+
+    return jsonify(data)
+
+@blueprint.route("/avg", methods=['GET'])
+def get_avg():
+    logger.info("Buscando informação de média")
+
+    table = request.args.get("tabela")
+    column = request.args.get("coluna")
+
+    logger.debug(f"Tabela:\t{table}, coluna:\t{column}")
+
+    table = str_to_class(table)
+    column = getattr(table, column)
+
+    session = get_session()
+
+    data = session.query(func.avg(column)).one()
+
+    logger.debug(data)
+
+    data = float(data[0])
+
+    data = {
+        "avg": data,
+    }
+
+    return jsonify(data)
+
+@blueprint.route("/max", methods=['GET'])
+def get_max():
+    logger.info("Buscando informação de máximo valor")
+
+    table = request.args.get("tabela")
+    column = request.args.get("coluna")
+
+    logger.debug(f"Tabela:\t{table}, coluna:\t{column}")
+
+    table = str_to_class(table)
+    column = getattr(table, column)
+
+    session = get_session()
+
+    data = session.query(func.max(column)).one()
+
+    logger.debug(data)
+
+    data = float(data[0])
+
+    data = {
+        "max": data,
+    }
+
+    return jsonify(data)
+
+
+@blueprint.route("/min", methods=['GET'])
+def get_min():
+    logger.info("Buscando informação de mínimo valor")
+
+    table = request.args.get("tabela")
+    column = request.args.get("coluna")
+
+    logger.debug(f"Tabela:\t{table}, coluna:\t{column}")
+
+    table = str_to_class(table)
+    column = getattr(table, column)
+
+    session = get_session()
+
+    data = session.query(func.min(column)).one()
+
+    logger.debug(data)
+
+    data = float(data[0])
+
+    data = {
+        "min": data,
+    }
 
     return jsonify(data)
