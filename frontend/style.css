@@ -1,0 +1,109 @@
+body {
+  font-family: "Roboto", sans-serif;
+  overflow-y: scroll;
+}
+header {
+  max-width: 800px;
+  margin: 0 auto 2.5em;
+  padding: 1.5em 5em;
+  border-bottom: 2px solid #e5e5e5;
+}
+main {
+  max-width: 800px;
+  padding: 0 5em;
+  margin: 0 auto;
+}
+footer {
+  max-width: 800px;
+  margin: 2.5em auto 0;
+  padding: 1.5em 5em;
+  border-top: 2px solid #e5e5e5;
+  color: #9090a0;
+}
+h1,h2 {
+  font-weight: normal;
+  margin-bottom: 0;
+}
+.subtitle {
+  display: inline-block;
+  color: #9090a0;
+  font-style: italic;
+}
+section {
+  margin-bottom: 5em;
+}
+h2 {
+  text-align: center;
+}
+fieldset {
+  color: #9090a0;
+  border: 2px solid #e4e4e7;
+}
+fieldset a:visited {
+  color: blue;
+}
+ol ol {
+  list-style: lower-alpha;
+}
+figure {
+  max-width: 700px;
+  margin: 0 auto;
+}
+figcaption {
+  text-align: center;
+  font-style: italic;
+  color: #9090a0;
+  font-size: 85%;
+}
+dt {
+  font-weight: bold;
+  margin: 1em 0 0.3em;
+}
+data, time, cite {
+  color: #0053a9;
+  font-style: normal;
+}
+data:empty::before,
+time:empty::before,
+cite:empty::before {
+  content: "(carregando)";
+  font-weight: normal;
+  opacity: .55;
+  font-size: 90%;
+  letter-spacing: -0.5px;
+}
+dd {
+  margin-inline-start: 0;
+  margin-left: 0.5em;
+  margin-bottom: 0.5em;
+  border-left: 2px solid #eee;
+  padding-left: 1em;
+}
+hr {
+  border: 0;
+  border-bottom: 2px dashed #e5e5e5;
+  width: 2em;
+  margin: auto;
+}
+.side-by-side {
+  display: flex;
+}
+#map {
+  height: 400px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 600px) {
+  header,main,footer {
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 80%;
+  }
+  section {
+    margin-bottom: 2.5em;
+  }
+  #map {
+    height: 300px;
+  }
+}

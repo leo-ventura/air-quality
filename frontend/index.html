@@ -4,122 +4,20 @@
   <meta charset="utf-8">
   <title> Análise da Qualidade do Ar Carioca </title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-body {
-  font-family: "Roboto", sans-serif;
-  overflow-y: scroll;
-}
-header {
-  max-width: 800px;
-  margin: 0 auto 2.5em;
-  padding: 1.5em 5em;
-  border-bottom: 2px solid #e5e5e5;
-}
-main {
-  max-width: 800px;
-  padding: 0 5em;
-  margin: 0 auto;
-}
-footer {
-  max-width: 800px;
-  margin: 2.5em auto 0;
-  padding: 1.5em 5em;
-  border-top: 2px solid #e5e5e5;
-  color: #9090a0;
-}
-h1,h2 {
-  font-weight: normal;
-  margin-bottom: 0;
-}
-.subtitle {
-  display: inline-block;
-  color: #9090a0;
-  font-style: italic;
-}
-section {
-  margin-bottom: 5em;
-}
-h2 {
-  text-align: center;
-}
-fieldset {
-  color: #9090a0;
-  border: 2px solid #e4e4e7;
-}
-fieldset a:visited {
-  color: blue;
-}
-ol ol {
-  list-style: lower-alpha;
-}
-figure {
-  max-width: 700px;
-  margin: 0 auto;
-}
-figcaption {
-  text-align: center;
-  font-style: italic;
-  color: #9090a0;
-  font-size: 85%;
-}
-dt {
-  font-weight: bold;
-  margin: 1em 0 0.3em;
-}
-data, time, cite {
-  color: #0053a9;
-  font-style: normal;
-}
-data:empty::before,
-time:empty::before,
-cite:empty::before {
-  content: "(carregando)";
-  font-weight: normal;
-  opacity: .55;
-  font-size: 90%;
-  letter-spacing: -0.5px;
-}
-dd {
-  margin-inline-start: 0;
-  margin-left: 0.5em;
-  margin-bottom: 0.5em;
-  border-left: 2px solid #eee;
-  padding-left: 1em;
-}
-hr {
-  border: 0;
-  border-bottom: 2px dashed #e5e5e5;
-  width: 2em;
-  margin: auto;
-}
-#map {
-  height: 400px;
-  max-width: 700px;
-  margin: 0 auto;
-}
-.side-by-side {
-  display: flex;
-}
-
-@media screen and (max-width: 600px) {
-  header,main,footer {
-    padding-left: 1em;
-    padding-right: 1em;
-    font-size: 80%;
-  }
-  section {
-    margin-bottom: 2.5em;
-  }
-  #map {
-    height: 300px;
-  }
-}
-  </style>
-   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  <link rel="stylesheet" href="./style.css"/>
+  <!-- Leaflet.js -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
    crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+   crossorigin=""></script>
+  <!-- ApexCharts.js -->
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
+  <!-- Utilities -->
+  <script src="./util.js"></script>
   <header>
     <h1> Análise da Qualidade do Ar </h1>
     <p class="subtitle">
@@ -136,6 +34,7 @@ hr {
           pertencem
         </figcaption>
       </figure>
+      <script src="./map.js"></script>
     </section>
     <section>
       <fieldset>
@@ -225,6 +124,7 @@ hr {
         Percebe-se picos, porém nenhuma medição fica acima do nível "Regular". A
         qualidade do ar é aceitável.
       </p>
+      <script src="./visuals/o3.js"></script>
     </section>
     <section id="tijuca-no2">
       <p>
@@ -244,10 +144,9 @@ hr {
         de 2018, quando atinge um nível de 61. Contudo, esse nível continua sob
         a faixa "Regular", e é portanto aceitável.
       </p>
+      <script src="./visuals/no2.js"></script>
     </section>
-    <section>
-      <hr>
-    </section>
+    <section><hr></section>
     <section id="temp">
       <p>
         A seguir, analisamos dados sobre as temperaturas registradas:
@@ -281,6 +180,7 @@ hr {
           </figcaption>
         </figure>
       </article>
+      <script src="./visuals/temperature.js"></script>
     </section>
   </main>
   <footer>
@@ -290,273 +190,5 @@ hr {
       <a href="https://github.com/leo-ventura/air-quality">disponível no GitHub</a>.
     </p>
   </footer>
-  <!-- Utilities -->
-  <script>
-function get(url,callback) {
-  const request = new XMLHttpRequest();
-  request.open("GET", API+url, true);
-  request.onload = callback;
-  request.send();
-}
-
-function xss(str) {
-  return (str+"")
-    .split("&").join("&amp;")
-    .split(">").join("&gt;")
-    .split("<").join("&lt;");
-}
-  </script>
-  <!-- Leaflet.js -->
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-   integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-   crossorigin=""></script>
-  <script>
-const API = "http://bd.amendo.im:8081/api";
-
-// Create the map
-const map = L.map("map").setView([-22.8879,-43.4711], 10);
-
-// Set up the OSM layer
-L.tileLayer(
-  //"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-  "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
-  //"http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
-  { maxZoom: 18, minZoom: 10 }
-).addTo(map);
-
-// Get station data
-get("/estacoes", function() {
-  if(ok(this.status)) {
-    const data = JSON.parse(this.response);
-    console.log(data);
-    plotStationsToMap(data);
-  }
-});
-
-// Get zone data
-get("/zonas", function() {
-  if(ok(this.status)) {
-    const data = JSON.parse(this.response);
-    console.log(data);
-    plotZonesToMap(data);
-  }
-});
-
-function ok(status) {
-  return status >= 200 && status < 400;
-}
-
-const stations = {};
-function plotStationsToMap(data) {
-  data.forEach(e => {
-    const center = [e.Latitude, e.Longitude];
-    const circle = L.marker(center, 1000).addTo(map)
-      .bindPopup(`<b>${xss(e.SiglaLocal)}</b><br>${xss(e.NomeEstacao)}`);
-    stations[e.Codigo] = {
-      name: e.NomeEstacao,
-      acronym: e.SiglaLocal
-    };
-  });
-}
-
-function plotZonesToMap(data) {
-  data.reverse().forEach(e => {
-    const center = [e.Latitude, e.Longitude];
-    L.circle(center, {radius: e.Raio}).addTo(map)
-      .bindPopup(`<b>${xss(e.Nome)}</b>`);
-  });
-}
-  </script>
-  <!-- ApexCharts.js -->
-  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-  <script>
-const $chart_ozone = document.getElementById("chart-ozone");
-const $chart_nitrogen = document.getElementById("chart-nitrogen");
-const $chart_temperature = document.getElementById("chart-temperature");
-
-const preventZoomConfig = {
-  tools: {
-    zoom: false,
-    zoomin: false,
-    zoomout: false,
-    pan: false,
-    reset: false
-  }
-};
-const gradientConfig = {
-  type: "gradient",
-  gradient: {
-    shadeIntensity: 1,
-    opacityFrom: 0.7,
-    opacityTo: 0.9,
-    stops: [0, 100, 100]
-  }
-};
-
-get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
-  if(this.status >= 200 && this.status < 400) {
-    const data = JSON.parse(this.response);
-    console.log(data);
-    plot(
-      data.slice(-50),
-      $chart_ozone,
-      "Data",
-      "IQAR",
-      "IQAR O<sub>3</sub>",
-      (value) => `${value} / 300`
-    );
-  }
-});
-get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=NO2", function() {
-  if(this.status >= 200 && this.status < 400) {
-    const data = JSON.parse(this.response);
-    console.log(data);
-    plot(
-      data.slice(-50),
-      $chart_nitrogen,
-      "Data",
-      "IQAR",
-      "IQAR NO<sub>2</sub>",
-      (value) => `${value} / 300`
-    );
-  }
-});
-
-const temperature_data = {};
-// Get the max and min temperature reading
-for(const par of ["max", "min"]) {
-  get(`/${par}?tabela=Analise&coluna=Temperatura`, function() {
-    if(this.status >= 200 && this.status < 400) {
-      const data = JSON.parse(this.response);
-      document.getElementById(`${par}-temp-val`).textContent = `${data[par]}`;
-      temperature_data[par] = data[par];
-
-      // Find analysis with that temperature value
-      get(`/analise?temperatura=${data[par]}`, function() {
-        if(this.status >= 200 && this.status < 400) {
-          const data = JSON.parse(this.response)[0];
-          console.log(data);
-
-          const date = prettifyDate(data.Data_e_hora);
-          const time = prettifyTime(data.Data_e_hora);
-          const station = stations[data.EstacaoCodigo].name;
-
-          document.getElementById(`${par}-temp-date`).textContent = date;
-          document.getElementById(`${par}-temp-time`).textContent = time;
-          document.getElementById(`${par}-temp-station`).textContent = station;
-        }
-      });
-
-      if(par == "min" && "avg" in temperature_data) {
-        plotTemperatureChart();
-      }
-    }
-  });
-}
-// Get average temperature
-get("/avg?tabela=Analise&coluna=Temperatura", function() {
-  if(this.status >= 200 && this.status < 400) {
-    const data = JSON.parse(this.response);
-    document.getElementById("avg-temp-val").textContent = round(data.avg,4);
-    temperature_data.avg = data.avg;
-    if("min" in temperature_data) {
-      plotTemperatureChart();
-    }
-  }
-});
-
-function plotTemperatureChart() {
-  const temperature_chart = new ApexCharts($chart_temperature, {
-    chart: {  type: "rangeBar", toolbar: preventZoomConfig, height: 300  },
-    plotOptions: {
-      bar: {
-        horizontal: false
-      }
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        type: "vertical",
-        colorStops: [{
-          offset: 0,
-          color: "#fc466b"
-        },{
-          offset: 500,
-          color: "#3f5efb"
-        }]
-      }
-    },
-    dataLabels: {  enabled: false,  },
-    series: [{
-      data: [{
-        x: "",
-        y: [+temperature_data.min, +temperature_data.max]
-      }]
-    }],
-    annotations: {
-      yaxis: [{
-        y: +temperature_data.avg,
-        borderColor: "#1a1a1a",
-        strokeDashArray: 0
-      }]
-    },
-    yaxis: {
-      labels: {
-        formatter: (value) => `${value} °C`
-      }
-    }
-  });
-  temperature_chart.render();
-}
-
-
-function round(num,dec=2) {
-  const val = 10**dec;
-  return ~~(num*val)/val;
-}
-function prettifyDate(str) {
-  const d = new Date(str);
-  const buf = [];
-  buf.push(d.getDate());
-  buf.push(d.getMonth()+1);
-  buf.push(d.getFullYear());
-  return buf.join("/");
-}
-function prettifyTime(str) {
-  const d = new Date(str);
-  const buf = [];
-  buf.push(d.getHours());
-  buf.push(d.getMinutes());
-  return buf.join(":");
-}
-
-function plot(data,element,x,y,series_name,formatter) {
-  const times = data.map(e => e[x]);
-  const values = data.map(e => e[y]);
-
-  // apexcharts.com/docs/
-  const chart = new ApexCharts(element, {
-    chart: {  type: "area", toolbar: preventZoomConfig  },
-    tooltip: {
-      x: {
-        show: true,
-        format: "HH:mm – dd/MM/yyyy",
-      }
-    },
-    dataLabels: {  enabled: false,  },
-    fill: gradientConfig,
-    series: [{
-      name: series_name,
-      data: [...values]
-    }],
-    xaxis: {
-      type: "datetime",
-      categories: [ ...times ]
-    },
-    yaxis: {  labels: { formatter: formatter }  }
-  });
-  chart.render();
-}
-  </script>
 </body>
 </html>
