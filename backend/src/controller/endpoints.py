@@ -141,6 +141,7 @@ def get_analises():
 def get_analise():
     logger.info(f'Buscando informações de sobre um grupo de análises')
 
+    # Test equality
     analise_id          = request.args.get("id")
     CO                  = request.args.get("CO")
     CH4                 = request.args.get("CH4")
@@ -157,6 +158,42 @@ def get_analise():
     direcaoVento        = request.args.get("direcaoVento")
     velocidadeVento     = request.args.get("velocidadeVento")
     estacaoCodigo       = request.args.get("estacaoCodigo")
+    # Test `value` > parameter
+    minAnalise_id          = request.args.get("minId")
+    minCO                  = request.args.get("minCO")
+    minCH4                 = request.args.get("minCH4")
+    minNO                  = request.args.get("minNO")
+    minNO2                 = request.args.get("minNO2")
+    minNOx                 = request.args.get("minNOx")
+    minPM_10               = request.args.get("minPM_10")
+    minPM_2_5              = request.args.get("minPM_2_5")
+    minTemperatura         = request.args.get("minTemperatura")
+    minChuva               = request.args.get("minChuva")
+    minPressao             = request.args.get("minPressao")
+    minRadiacaoSolar       = request.args.get("minRadiacaoSolar")
+    minUmidadeRelativaDoAr = request.args.get("minUmidadeRelativaDoAr")
+    minDirecaoVento        = request.args.get("minDirecaoVento")
+    minVelocidadeVento     = request.args.get("minVelocidadeVento")
+    minData                = request.args.get("minData");
+    minEstacaoCodigo       = request.args.get("minEstacaoCodigo")
+    # Test `value` < parameter
+    maxAnalise_id          = request.args.get("maxId")
+    maxCO                  = request.args.get("maxCO")
+    maxCH4                 = request.args.get("maxCH4")
+    maxNO                  = request.args.get("maxNO")
+    maxNO2                 = request.args.get("maxNO2")
+    maxNOx                 = request.args.get("maxNOx")
+    maxPM_10               = request.args.get("maxPM_10")
+    maxPM_2_5              = request.args.get("maxPM_2_5")
+    maxTemperatura         = request.args.get("maxTemperatura")
+    maxChuva               = request.args.get("maxChuva")
+    maxPressao             = request.args.get("maxPressao")
+    maxRadiacaoSolar       = request.args.get("maxRadiacaoSolar")
+    maxUmidadeRelativaDoAr = request.args.get("maxUmidadeRelativaDoAr")
+    maxDirecaoVento        = request.args.get("maxDirecaoVento")
+    maxVelocidadeVento     = request.args.get("maxVelocidadeVento")
+    maxData                = request.args.get("maxData");
+    maxEstacaoCodigo       = request.args.get("maxEstacaoCodigo")
 
     session = get_session()
 
@@ -194,6 +231,76 @@ def get_analise():
         query = query.filter(Analise.VelocidadeVento == velocidadeVento)
     if estacaoCodigo is not None:
         query = query.filter(Analise.EstacaoCodigo == estacaoCodigo)
+
+    if minAnalise_id is not None:
+        query = query.filter(Analise.Analise_id > minAnalise_id)
+    if minCO is not None:
+        query = query.filter(Analise.CO > minCO)
+    if minCH4 is not None:
+        query = query.filter(Analise.CH4 > minCH4)
+    if minNO is not None:
+        query = query.filter(Analise.NO > minNO)
+    if minNO2 is not None:
+        query = query.filter(Analise.NO2 > minNO2)
+    if minNOx is not None:
+        query = query.filter(Analise.NOx > minNOx)
+    if minPM_10 is not None:
+        query = query.filter(Analise.PM_10 > minPM_10)
+    if minPM_2_5 is not None:
+        query = query.filter(Analise.PM_2_5 > minPM_2_5)
+    if minTemperatura is not None:
+        query = query.filter(Analise.Temperatura > minTemperatura)
+    if minChuva is not None:
+        query = query.filter(Analise.Chuva > minChuva)
+    if minPressao is not None:
+        query = query.filter(Analise.Pressao > minPressao)
+    if minRadiacaoSolar is not None:
+        query = query.filter(Analise.RadiacaoSolar > minRadiacaoSolar)
+    if minUmidadeRelativaDoAr is not None:
+        query = query.filter(Analise.UmidadeRelativaDoAr > minUmidadeRelativaDoAr)
+    if minDirecaoVento is not None:
+        query = query.filter(Analise.DirecaoVento > minDirecaoVento)
+    if minVelocidadeVento is not None:
+        query = query.filter(Analise.VelocidadeVento > minVelocidadeVento)
+    if minData is not None:
+        query = query.filter(Analise.Data_e_hora > minData)
+    if minEstacaoCodigo is not None:
+        query = query.filter(Analise.EstacaoCodigo > minEstacaoCodigo)
+
+    if maxAnalise_id is not None:
+        query = query.filter(Analise.Analise_id < maxAnalise_id)
+    if maxCO is not None:
+        query = query.filter(Analise.CO < maxCO)
+    if maxCH4 is not None:
+        query = query.filter(Analise.CH4 < maxCH4)
+    if maxNO is not None:
+        query = query.filter(Analise.NO < maxNO)
+    if maxNO2 is not None:
+        query = query.filter(Analise.NO2 < maxNO2)
+    if maxNOx is not None:
+        query = query.filter(Analise.NOx < maxNOx)
+    if maxPM_10 is not None:
+        query = query.filter(Analise.PM_10 < maxPM_10)
+    if maxPM_2_5 is not None:
+        query = query.filter(Analise.PM_2_5 < maxPM_2_5)
+    if maxTemperatura is not None:
+        query = query.filter(Analise.Temperatura < maxTemperatura)
+    if maxChuva is not None:
+        query = query.filter(Analise.Chuva < maxChuva)
+    if maxPressao is not None:
+        query = query.filter(Analise.Pressao < maxPressao)
+    if maxRadiacaoSolar is not None:
+        query = query.filter(Analise.RadiacaoSolar < maxRadiacaoSolar)
+    if maxUmidadeRelativaDoAr is not None:
+        query = query.filter(Analise.UmidadeRelativaDoAr < maxUmidadeRelativaDoAr)
+    if maxDirecaoVento is not None:
+        query = query.filter(Analise.DirecaoVento < maxDirecaoVento)
+    if maxVelocidadeVento is not None:
+        query = query.filter(Analise.VelocidadeVento < maxVelocidadeVento)
+    if maxData is not None:
+        query = query.filter(Analise.Data_e_hora < maxData)
+    if maxEstacaoCodigo is not None:
+        query = query.filter(Analise.EstacaoCodigo < maxEstacaoCodigo)
 
     logger.debug(f'Query: {query}')
 
