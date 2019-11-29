@@ -19,6 +19,7 @@ const gradientConfig = {
 };
 
 function get(url,callback) {
+  if(!NET) return;
   const request = new XMLHttpRequest();
   request.open("GET", API+url, true);
   request.onload = callback;
@@ -58,7 +59,7 @@ function prettifyTime(str) {
   return buf.join(":");
 }
 
-function plot(data,element,x,y,series_name,formatter) {
+function plot(data,element,x,y,series_name,colors,formatter) {
   const times = data.map(e => e[x]);
   const values = data.map(e => e[y]);
 
@@ -69,6 +70,7 @@ function plot(data,element,x,y,series_name,formatter) {
       show: true,
       format: "HH:mm – dd/MM/yyyy",
     }},
+    colors: colors,
     dataLabels: { enabled: false },
     fill: gradientConfig,
     series: [{

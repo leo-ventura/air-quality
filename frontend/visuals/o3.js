@@ -8,6 +8,7 @@ get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
       "Data",
       "IQAR",
       "IQAR O<sub>3</sub>",
+      ["#f7b801"],
       (value) => `${value} / 300`
     );
   }

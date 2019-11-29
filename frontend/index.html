@@ -16,6 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
+  <script>const NET = true;</script>
   <!-- Utilities -->
   <script src="./util.js"></script>
   <header>
@@ -30,8 +31,8 @@
       <figure>
         <div id="map"></div>
         <figcaption>
-          Fig. 1: Mapa com a localização das estações mapeadas e zonas as quais
-          pertencem
+          Mapa com a localização das estações mapeadas e zonas as quais
+          pertencem.
         </figcaption>
       </figure>
       <script src="./map.js"></script>
@@ -58,6 +59,11 @@
             </li>
             <li>
               <a href="#temp">Temperaturas</a>
+            </li>
+            <li>
+              <a href="#dew">
+                Ponto de orvalho, temperatura e umidade relativa
+              </a>
             </li>
           </ol>
         </nav>
@@ -116,8 +122,8 @@
       <figure>
         <div id="chart-ozone"></div>
         <figcaption>
-          Fig. 2: Índice de Qualidade do Ar para o poluente O<sub>3</sub>
-          (ozônio), como medido na estação da Tijuca
+          Índice de Qualidade do Ar para o poluente O<sub>3</sub> (ozônio), como
+          medido na estação da Tijuca.
         </figcaption>
       </figure>
       <p>
@@ -135,8 +141,8 @@
       <figure>
         <div id="chart-nitrogen"></div>
         <figcaption>
-          Fig. 2: Índice de Qualidade do Ar para o poluente NO<sub>2</sub>
-          (dióxido de nitrogênio), como medido na estação da Tijuca
+          Índice de Qualidade do Ar para o poluente NO<sub>2</sub> (dióxido de
+          nitrogênio), como medido na estação da Tijuca.
         </figcaption>
       </figure>
       <p>
@@ -175,12 +181,63 @@
         <figure>
           <div id="chart-temperature"></div>
           <figcaption>
-            Fig. 3: Gráfico das temperaturas. A média é representada pela linha
-            em preto.
+            Gráfico das temperaturas. A média é representada pela linha em preto.
           </figcaption>
         </figure>
       </article>
       <script src="./visuals/temperature.js"></script>
+    </section>
+    <section><hr></section>
+    <section id="dew">
+      <p>
+        Nesta seção, veremos informações sobre o chamado "ponto de orvalho".
+      </p>
+      <blockquote cite="https://pt.wikipedia.org/wiki/Ponto_de_orvalho">
+        <p>
+          Ponto de orvalho designa a temperatura na qual o vapor de água
+          presente no ar ambiente passa ao estado líquido na forma de pequenas
+          gotas por via da condensação, o chamado <em>orvalho</em>.
+        </p>
+      </blockquote>
+      <p>
+        Para calcular o ponto de orvalho com alta precisão, utiliza-se a equação
+        de Arden Buck, que relaciona temperatura, pressão e umidade relativa.
+        Porém, a fórmula é muito complexa, então usaremos a seguinte aproximação,
+        com <q cite="https://pt.wikipedia.org/wiki/Ponto_de_orvalho">precisão de
+        ±1&nbsp;°C enquanto a umidade está acima de 50%</q>:
+      </p>
+      <figure class="center">
+        <!-- Tpo ~ T - (100 - UR)/5 -->
+        <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3adc6a8c559515b7b02790f7364fdab20eeb6554">
+        <figcaption>
+          Aproximação da fórmula de Magnus.
+        </figcaption>
+      </figure>
+      <p>
+        Onde:
+        <ul>
+          <li><var>T<sub>po</sub></var> é o ponto de orvalho (o que queremos);</li>
+          <li><var>T</var> é a temperatura do ar;</li>
+          <li><var>UR</var> é a Umidade Relativa do ar.</li>
+        </ul>
+        Possuímos, pelas análises, tanto a temperatura do ar, quanto a umidade
+        relativa. Portanto, podemos calcular o ponto de orvalho para um dado
+        instante de tempo:
+      </p>
+      <h2> Ponto de orvalho, temperatura, pressão e umidade relativa </h2>
+      <figure>
+        <div id="chart-dewpoint"></div>
+        <div id="chart-relhum"></div>
+        <figcaption>
+          Acima, comparação do ponto de orvalho com a temperatura (ambos medidos
+          em °C); abaixo, umidade relativa do ar (em %) e pressão (em mbar).
+        </figcaption>
+      </figure>
+      <p>
+        Pelos gráficos, pode-se perceber como pressão e umidade relativa
+        influenciam no ponto de orvalho.
+      </p>
+      <script src="./visuals/dewpoint.js"></script>
     </section>
   </main>
   <footer>

@@ -55,6 +55,11 @@ figcaption {
   color: #9090a0;
   font-size: 85%;
 }
+:root { counter-reset: figcounter; }
+figcaption::before {
+  counter-increment: figcounter;
+  content: "Fig. " counter(figcounter) ":";
+}
 dt {
   font-weight: bold;
   margin: 1em 0 0.3em;
@@ -72,12 +77,27 @@ cite:empty::before {
   font-size: 90%;
   letter-spacing: -0.5px;
 }
-dd {
+dd, blockquote {
+  position: relative;
   margin-inline-start: 0;
   margin-left: 0.5em;
   margin-bottom: 0.5em;
   border-left: 2px solid #eee;
   padding-left: 1em;
+}
+blockquote::before {
+  content: "❝";
+  position: absolute;
+  font-size: 200%;
+  left: -.8em;
+  top: -.1em;
+  color: #eee;
+  font-family: serif;
+}
+blockquote::after {
+  content: attr(cite);
+  font-size: 65%;
+  opacity: .55;
 }
 hr {
   border: 0;
@@ -88,10 +108,16 @@ hr {
 .side-by-side {
   display: flex;
 }
+.center {
+  text-align: center;
+}
 #map {
   height: 400px;
   max-width: 700px;
   margin: 0 auto;
+}
+#chart-relhum {
+  margin-top: -25px;
 }
 
 @media screen and (max-width: 600px) {
