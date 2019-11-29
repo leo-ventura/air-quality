@@ -64,6 +64,20 @@ figcaption {
 }
 dt {
   font-weight: bold;
+  margin: 1em 0 0.3em;
+}
+data, time, cite {
+  color: #0053a9;
+  font-style: normal;
+}
+data:empty::before,
+time:empty::before,
+cite:empty::before {
+  content: "(carregando)";
+  font-weight: normal;
+  opacity: .55;
+  font-size: 90%;
+  letter-spacing: -0.5px;
 }
 dd {
   margin-inline-start: 0;
@@ -72,11 +86,21 @@ dd {
   border-left: 2px solid #eee;
   padding-left: 1em;
 }
+hr {
+  border: 0;
+  border-bottom: 2px dashed #e5e5e5;
+  width: 2em;
+  margin: auto;
+}
 #map {
   height: 400px;
   max-width: 700px;
   margin: 0 auto;
 }
+.side-by-side {
+  display: flex;
+}
+
 @media screen and (max-width: 600px) {
   header,main,footer {
     padding-left: 1em;
@@ -119,9 +143,7 @@ dd {
         <nav>
           <ol>
             <li>
-              <a href="#iqar">
-                IQAR
-              </a>
+              <a href="#iqar">IQAR</a>
               <ol>
                 <li>
                   <a href="#tijuca-o3">
@@ -134,6 +156,9 @@ dd {
                   </a>
                 </li>
               </ol>
+            </li>
+            <li>
+              <a href="#temp">Temperaturas</a>
             </li>
           </ol>
         </nav>
@@ -220,16 +245,43 @@ dd {
         a faixa "Regular", e é portanto aceitável.
       </p>
     </section>
-<!--     <section>
+    <section>
+      <hr>
+    </section>
+    <section id="temp">
       <p>
-        O gráfico a seguir mostra as medições de temperatura do dia 1 de janeiro de 2011:
+        A seguir, analisamos dados sobre as temperaturas registradas:
       </p>
-      <h2> Temperatura (°C) </h2>
-      <figure>
-        <div id="chart-temperature"></div>
-        <figcaption>Fig. 1: Temperatura nas regiões de Copacabana e Centro</figcaption>
-      </figure>
-    </section> -->
+      <h2> Temperaturas </h2>
+      <article class="side-by-side">
+        <dl>
+          <dt> Maior temperatura </dt>
+          <dd>
+            A maior temperatura detectada foi de <data id="max-temp-val"></data>&nbsp;°C,
+            no dia <time id="max-temp-date"></time> às <time id="max-temp-time"></time>,
+            pela estação <cite id="max-temp-station"></cite>.
+          </dd>
+          <dt> Menor temperatura </dt>
+          <dd>
+            A menor temperatura detectada foi de <data id="min-temp-val"></data>&nbsp;°C,
+            no dia <time id="min-temp-date"></time> às <time id="min-temp-time"></time>,
+            pela estação <cite id="min-temp-station"></cite>.
+          </dd>
+          <dt> Temperatura média </dt>
+          <dd>
+            A temperatura média de todas as análises, indicada ao lado em preto,
+            é de (a&shy;pro&shy;xi&shy;ma&shy;da&shy;men&shy;te) <data id="avg-temp-val"></data>&nbsp;°C.
+          </dd>
+        </dl>
+        <figure>
+          <div id="chart-temperature"></div>
+          <figcaption>
+            Fig. 3: Gráfico das temperaturas. A média é representada pela linha
+            em preto.
+          </figcaption>
+        </figure>
+      </article>
+    </section>
   </main>
   <footer>
     <p>
@@ -242,7 +294,7 @@ dd {
   <script>
 function get(url,callback) {
   const request = new XMLHttpRequest();
-  request.open("GET", url, true);
+  request.open("GET", API+url, true);
   request.onload = callback;
   request.send();
 }
@@ -269,11 +321,11 @@ L.tileLayer(
   //"http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
   "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png",
   //"http://tile.stamen.com/terrain/{z}/{x}/{y}.jpg",
-  { maxZoom: 18 }
+  { maxZoom: 18, minZoom: 10 }
 ).addTo(map);
 
 // Get station data
-get(API+"/estacoes", function() {
+get("/estacoes", function() {
   if(ok(this.status)) {
     const data = JSON.parse(this.response);
     console.log(data);
@@ -282,7 +334,7 @@ get(API+"/estacoes", function() {
 });
 
 // Get zone data
-get(API+"/zonas", function() {
+get("/zonas", function() {
   if(ok(this.status)) {
     const data = JSON.parse(this.response);
     console.log(data);
@@ -295,26 +347,23 @@ function ok(status) {
 }
 
 const stations = {};
-
 function plotStationsToMap(data) {
   data.forEach(e => {
     const center = [e.Latitude, e.Longitude];
     const circle = L.marker(center, 1000).addTo(map)
       .bindPopup(`<b>${xss(e.SiglaLocal)}</b><br>${xss(e.NomeEstacao)}`);
-    stations[e.SiglaLocal] = e.NomeEstacao;
+    stations[e.Codigo] = {
+      name: e.NomeEstacao,
+      acronym: e.SiglaLocal
+    };
   });
 }
 
 function plotZonesToMap(data) {
-  data.forEach(e => {
-    // FIXME: API has Radius/Lat/Lon all swapped
-    // Fixed! hihi
-    const RADIUS = e.Raio;
-    const LAT = e.Latitude;
-    const LON = e.Longitude;
-    const center = [LAT, LON];
-    L.circle(center, {radius: RADIUS}).addTo(map)
-      .bindPopup(`Zona <b>${xss(e.Nome)}</b>`);
+  data.reverse().forEach(e => {
+    const center = [e.Latitude, e.Longitude];
+    L.circle(center, {radius: e.Raio}).addTo(map)
+      .bindPopup(`<b>${xss(e.Nome)}</b>`);
   });
 }
   </script>
@@ -323,8 +372,28 @@ function plotZonesToMap(data) {
   <script>
 const $chart_ozone = document.getElementById("chart-ozone");
 const $chart_nitrogen = document.getElementById("chart-nitrogen");
+const $chart_temperature = document.getElementById("chart-temperature");
 
-get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
+const preventZoomConfig = {
+  tools: {
+    zoom: false,
+    zoomin: false,
+    zoomout: false,
+    pan: false,
+    reset: false
+  }
+};
+const gradientConfig = {
+  type: "gradient",
+  gradient: {
+    shadeIntensity: 1,
+    opacityFrom: 0.7,
+    opacityTo: 0.9,
+    stops: [0, 100, 100]
+  }
+};
+
+get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
   if(this.status >= 200 && this.status < 400) {
     const data = JSON.parse(this.response);
     console.log(data);
@@ -338,7 +407,7 @@ get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
     );
   }
 });
-get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=NO2", function() {
+get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=NO2", function() {
   if(this.status >= 200 && this.status < 400) {
     const data = JSON.parse(this.response);
     console.log(data);
@@ -352,6 +421,114 @@ get(API+"/qualidadeDoAr?siglaLocalEstacao=SP&poluente=NO2", function() {
     );
   }
 });
+
+const temperature_data = {};
+// Get the max and min temperature reading
+for(const par of ["max", "min"]) {
+  get(`/${par}?tabela=Analise&coluna=Temperatura`, function() {
+    if(this.status >= 200 && this.status < 400) {
+      const data = JSON.parse(this.response);
+      document.getElementById(`${par}-temp-val`).textContent = `${data[par]}`;
+      temperature_data[par] = data[par];
+
+      // Find analysis with that temperature value
+      get(`/analise?temperatura=${data[par]}`, function() {
+        if(this.status >= 200 && this.status < 400) {
+          const data = JSON.parse(this.response)[0];
+          console.log(data);
+
+          const date = prettifyDate(data.Data_e_hora);
+          const time = prettifyTime(data.Data_e_hora);
+          const station = stations[data.EstacaoCodigo].name;
+
+          document.getElementById(`${par}-temp-date`).textContent = date;
+          document.getElementById(`${par}-temp-time`).textContent = time;
+          document.getElementById(`${par}-temp-station`).textContent = station;
+        }
+      });
+
+      if(par == "min" && "avg" in temperature_data) {
+        plotTemperatureChart();
+      }
+    }
+  });
+}
+// Get average temperature
+get("/avg?tabela=Analise&coluna=Temperatura", function() {
+  if(this.status >= 200 && this.status < 400) {
+    const data = JSON.parse(this.response);
+    document.getElementById("avg-temp-val").textContent = round(data.avg,4);
+    temperature_data.avg = data.avg;
+    if("min" in temperature_data) {
+      plotTemperatureChart();
+    }
+  }
+});
+
+function plotTemperatureChart() {
+  const temperature_chart = new ApexCharts($chart_temperature, {
+    chart: {  type: "rangeBar", toolbar: preventZoomConfig, height: 300  },
+    plotOptions: {
+      bar: {
+        horizontal: false
+      }
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        type: "vertical",
+        colorStops: [{
+          offset: 0,
+          color: "#fc466b"
+        },{
+          offset: 500,
+          color: "#3f5efb"
+        }]
+      }
+    },
+    dataLabels: {  enabled: false,  },
+    series: [{
+      data: [{
+        x: "",
+        y: [+temperature_data.min, +temperature_data.max]
+      }]
+    }],
+    annotations: {
+      yaxis: [{
+        y: +temperature_data.avg,
+        borderColor: "#1a1a1a",
+        strokeDashArray: 0
+      }]
+    },
+    yaxis: {
+      labels: {
+        formatter: (value) => `${value} °C`
+      }
+    }
+  });
+  temperature_chart.render();
+}
+
+
+function round(num,dec=2) {
+  const val = 10**dec;
+  return ~~(num*val)/val;
+}
+function prettifyDate(str) {
+  const d = new Date(str);
+  const buf = [];
+  buf.push(d.getDate());
+  buf.push(d.getMonth()+1);
+  buf.push(d.getFullYear());
+  return buf.join("/");
+}
+function prettifyTime(str) {
+  const d = new Date(str);
+  const buf = [];
+  buf.push(d.getHours());
+  buf.push(d.getMinutes());
+  return buf.join(":");
+}
 
 function plot(data,element,x,y,series_name,formatter) {
   const times = data.map(e => e[x]);
@@ -380,25 +557,6 @@ function plot(data,element,x,y,series_name,formatter) {
   });
   chart.render();
 }
-
-const preventZoomConfig = {
-  tools: {
-    zoom: false,
-    zoomin: false,
-    zoomout: false,
-    pan: false,
-    reset: false
-  }
-};
-const gradientConfig = {
-  type: "gradient",
-  gradient: {
-    shadeIntensity: 1,
-    opacityFrom: 0.7,
-    opacityTo: 0.9,
-    stops: [0, 100, 100]
-  }
-};
   </script>
 </body>
 </html>
