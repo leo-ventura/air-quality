@@ -1,8 +1,8 @@
 const $chart_dewpoint = document.getElementById("chart-dewpoint");
 const $chart_relhum = document.getElementById("chart-relhum");
-get("/analise?estacaoCodigo=1", function() {
+get("/analise?minData=2017-06&estacaoCodigo=1", function() {
   if(ok(this.status)) {
-    const data = JSON.parse(this.response).slice(-50);
+    const data = JSON.parse(this.response).slice(-100);
 
     const times = data.map(e => e.Data_e_hora);
 
@@ -14,7 +14,7 @@ get("/analise?estacaoCodigo=1", function() {
     }).filter(e => !!e);
     const temperatures = data.map(e => round(e.Temperatura,4));
     const pressure = data.map(e => round(e.Pressao,4));
-    
+
     const dew_chart = new ApexCharts($chart_dewpoint, {
       chart: {
         type: "area",
@@ -78,8 +78,8 @@ get("/analise?estacaoCodigo=1", function() {
         categories: [ ...times ]
       },
       yaxis: [{
-        max: 1015,
-        min: 1005,
+        max: 1040,
+        min: 1020,
         labels: {
           formatter: (value) => `${value} mbar`
         },

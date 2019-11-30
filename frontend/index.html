@@ -65,6 +65,9 @@
                 Ponto de orvalho, temperatura e umidade relativa
               </a>
             </li>
+            <li>
+              <a href="#rain"> Precipitação no Natal </a>
+            </li>
           </ol>
         </nav>
       </fieldset>
@@ -223,7 +226,8 @@
         </ul>
         Possuímos, pelas análises, tanto a temperatura do ar, quanto a umidade
         relativa. Portanto, podemos calcular o ponto de orvalho para um dado
-        instante de tempo:
+        instante de tempo. Aqui, temos as informações geradas a partir dos dados
+        da estação de Copacabana:
       </p>
       <h2> Ponto de orvalho, temperatura, pressão e umidade relativa </h2>
       <figure>
@@ -232,6 +236,7 @@
         <figcaption>
           Acima, comparação do ponto de orvalho com a temperatura (ambos medidos
           em °C); abaixo, umidade relativa do ar (em %) e pressão (em mbar).
+          Dados fornecidos pela estação de Copacabana.
         </figcaption>
       </figure>
       <p>
@@ -239,6 +244,22 @@
         influenciam no ponto de orvalho.
       </p>
       <script src="./visuals/dewpoint.js"></script>
+    </section>
+    <section><hr></section>
+    <section id="rain">
+      <p>
+        A seguir, analisaremos locais em que houve chuva no dia de Natal (25 de
+        dezembro) de 2018.
+      </p>
+      <h2> Precipitação no Natal </h2>
+      <figure>
+        <div id="chart-rain"></div>
+        <figcaption>
+          Gráfico precipitação (em mm) por tempo, adquirido de análises
+          realizadas no dia 25 de dezembro de 2018.
+        </figcaption>
+      </figure>
+      <script src="./visuals/rain.js"></script>
     </section>
   </main>
   <footer>

@@ -2,7 +2,7 @@ const $chart_ozone = document.getElementById("chart-ozone");
 get("/qualidadeDoAr?siglaLocalEstacao=SP&poluente=O3", function() {
   if(ok(this.status)) {
     const data = JSON.parse(this.response);
-    console.log(data);
+
     plotIQAR(
       data.slice(-50),
       $chart_ozone,
