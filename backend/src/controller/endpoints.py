@@ -12,10 +12,11 @@ from src.util.logger import get_logger
 from src.util.mysqlConnector import get_session
 from src.util.stringUtility import str_to_class
 
+from src.model.Tag import Tag
+from src.model.Zona import Zona
 from src.model.Estacao import Estacao
 from src.model.Analise import Analise
 from src.model.QualidadeDoAr import QualidadeDoAr
-from src.model.Zona import Zona
 
 logger = get_logger(sys.argv[0])
 
@@ -57,7 +58,15 @@ def get_endpoints():
             },
             {
                 "url": "/zona",
-                "desc": "Recebe filtros e retornas as zonas que encaixam no filtro aplicado"
+                "desc": "Recebe filtros e retorna as zonas que encaixam nos filtros aplicados"
+            },
+            {
+                "url": "/tags",
+                "desc": "Retorna todas as tags disponíveis"
+            },
+            {
+                "url": "/tag",
+                "desc": "Recebe filtros e retorna as tags que encaixam nos filtros"
             },
             {
                 "url": "/avg",
@@ -174,7 +183,7 @@ def get_analise():
     minUmidadeRelativaDoAr = request.args.get("minUmidadeRelativaDoAr")
     minDirecaoVento        = request.args.get("minDirecaoVento")
     minVelocidadeVento     = request.args.get("minVelocidadeVento")
-    minData                = request.args.get("minData");
+    minData                = request.args.get("minData")
     minEstacaoCodigo       = request.args.get("minEstacaoCodigo")
     # Test `value` < parameter
     maxAnalise_id          = request.args.get("maxId")
@@ -192,7 +201,7 @@ def get_analise():
     maxUmidadeRelativaDoAr = request.args.get("maxUmidadeRelativaDoAr")
     maxDirecaoVento        = request.args.get("maxDirecaoVento")
     maxVelocidadeVento     = request.args.get("maxVelocidadeVento")
-    maxData                = request.args.get("maxData");
+    maxData                = request.args.get("maxData")
     maxEstacaoCodigo       = request.args.get("maxEstacaoCodigo")
 
     session = get_session()
@@ -376,7 +385,7 @@ def get_zonas():
 
 @blueprint.route("/zona", methods=['GET'])
 def get_zona():
-    logger.info(f'Buscando informações de sobre zona')
+    logger.info(f'Buscando informações sobre zona')
 
     Zona_id = request.args.get("zona_id")
     Nome = request.args.get("nome")
@@ -400,6 +409,49 @@ def get_zona():
         query = query.filter(Zona.Latitude == Latitude)
     if Longitude is not None:
         query = query.filter(Zona.Longitude == Longitude)
+
+    logger.debug(f'Query: {str(query)}')
+
+    data = query.all()
+    data = [d.format() for d in data]
+
+    session.close()
+
+    return jsonify(data)
+
+@blueprint.route("/tags", methods=['GET'])
+def get_tags():
+    logger.info("Buscando informação sobre as tags")
+
+    session = get_session()
+
+    data = session.query(Tag).all()
+    data = [d.format() for d in data]
+
+    logger.debug(data)
+
+    return jsonify(data)
+
+@blueprint.route("/tag", methods=['GET'])
+def get_tag():
+    logger.info(f'Buscando informações sobre tag')
+
+    Tag_id    = request.args.get("tag_id")
+    Descricao = request.args.get("tag")
+    Zona_id   = request.args.get("zona_id")
+
+    logger.debug(f'Filtros: {Tag_id} {Tag} {Zona_id}')
+
+    session = get_session()
+
+    query = session.query(Tag)
+
+    if Tag_id is not None:
+        query = query.filter(Tag.Tag_id == Tag_id)
+    if Descricao is not None:
+        query = query.filter(Tag.Tag == Descricao)
+    if Zona_id is not None:
+        query = query.filter(Tag.Zona_id == Zona_id)
 
     logger.debug(f'Query: {str(query)}')
 
