@@ -14,6 +14,7 @@ class Zona(Base):
     Latitude  = Column(Float)
     Longitude = Column(Float)
     Estacoes  = relationship('Estacao', secondary=EstacaoZona)
+    Tags      = relationship('Tag')
 
     def format(self):
         return {
