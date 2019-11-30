@@ -8,7 +8,7 @@ get("/analise?estacaoCodigo=1", function() {
 
     const dewpoints = data.map(v => {
       if(!v.Temperatura || !v.UmidadeRelativaDoAr) return null;
-      // Magnus formula approximation
+      // Arden Buck equation approximation
       const mag = v.Temperatura - (100 - v.UmidadeRelativaDoAr) / 5;
       return round(mag,4);
     }).filter(e => !!e);

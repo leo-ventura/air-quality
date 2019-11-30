@@ -45,8 +45,8 @@ function round(num,dec=2) {
 function prettifyDate(str) {
   const d = new Date(str);
   const buf = [];
-  buf.push(d.getDate());
-  buf.push(d.getMonth()+1);
+  buf.push(`${d.getDate()}`.padStart(2,0));
+  buf.push(`${d.getMonth()+1}`.padStart(2,0));
   buf.push(d.getFullYear());
   return buf.join("/");
 }
@@ -59,9 +59,15 @@ function prettifyTime(str) {
   return buf.join(":");
 }
 
-function plot(data,element,x,y,series_name,colors,formatter) {
+function plotIQAR(data,element,x,y,series_name,colors) {
   const times = data.map(e => e[x]);
   const values = data.map(e => e[y]);
+
+  const labelstyle = {
+    text: "\u200C",
+    borderWidth: 0,
+    style: { padding: { left: 0, right: 0, top: 0, bottom: 0 } }
+  };
 
   // apexcharts.com/docs/
   const chart = new ApexCharts(element, {
@@ -81,7 +87,32 @@ function plot(data,element,x,y,series_name,colors,formatter) {
       type: "datetime",
       categories: [ ...times ]
     },
-    yaxis: { labels: { formatter: formatter } }
+    yaxis: {
+      min: 0,
+      max: 300,
+      labels: { formatter: (value) => `${value} / 300` }
+    },
+    annotations: {
+      yaxis: [{
+        y: 51,
+        y2: 100,
+        borderColor: "#e5e5e5",
+        fillColor: "#e5e5e5",
+        label: labelstyle
+      },{
+        y: 101,
+        y2: 199,
+        borderColor: "#c2c2c2",
+        fillColor: "#c2c2c2",
+        label: labelstyle
+      },{
+        y: 200,
+        y2: 299,
+        borderColor: "#777",
+        fillColor: '#777',
+        label: labelstyle
+      }]
+    }
   });
   chart.render();
 }
