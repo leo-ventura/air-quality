@@ -1,5 +1,3 @@
-const API = "http://bd.amendo.im:8081/api";
-
 // Create the map
 const map = L.map("map").setView([-22.8879,-43.4711], 10);
 
@@ -44,10 +42,16 @@ function plotStationsToMap(data) {
   });
 }
 
+const zones = {};
 function plotZonesToMap(data) {
   data.reverse().forEach(e => {
     const center = [e.Latitude, e.Longitude];
     L.circle(center, {radius: e.Raio}).addTo(map)
       .bindPopup(`<b>${xss(e.Nome)}</b>`);
+    zones[e.Zona_id] = {
+      name: e.Nome,
+      coord: center,
+      radius: e.Raio
+    };
   });
 }

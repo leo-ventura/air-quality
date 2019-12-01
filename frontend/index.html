@@ -8,15 +8,14 @@
   <!-- Leaflet.js -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-   crossorigin=""/>
+   crossorigin/>
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-   crossorigin=""></script>
+   crossorigin></script>
   <!-- ApexCharts.js -->
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 </head>
 <body>
-  <script>const NET = true;</script>
   <!-- Utilities -->
   <script src="./util.js"></script>
   <header>
@@ -35,7 +34,7 @@
           pertencem.
         </figcaption>
       </figure>
-      <script src="./visuals/map.js"></script>
+      <script src="./visuals/map.js" defer></script>
     </section>
     <section>
       <fieldset>
@@ -65,12 +64,17 @@
                 Ponto de orvalho, temperatura e umidade relativa
               </a>
             </li>
+            <li>
+              <a href="#rain">Precipitação no Natal</a>
+            </li>
+            <li>
+              <a href="#pm">Material particulado</a>
+            </li>
           </ol>
         </nav>
       </fieldset>
     </section>
     <section id="iqar">
-      <h2> IQAR </h2>
       <p>
         IQAR é um valor numérico compreendido entre 0 e 300. Categoriza a
         qualidade do ar nas seguintes seções:
@@ -130,7 +134,7 @@
         Percebe-se picos, porém nenhuma medição fica acima do nível "Regular". A
         qualidade do ar é aceitável.
       </p>
-      <script src="./visuals/o3.js"></script>
+      <script src="./visuals/o3.js" defer></script>
     </section>
     <section id="tijuca-no2">
       <p>
@@ -146,11 +150,12 @@
         </figcaption>
       </figure>
       <p>
-        Para NO<sub>2</sub>, o maior índice alcançado ocorre no dia 13 de junho
-        de 2018, quando atinge um nível de 61. Contudo, esse nível continua sob
-        a faixa "Regular", e é portanto aceitável.
+        Para NO<sub>2</sub>, o maior índice alcançado ocorre no dia
+        <time id="max-no2-date"></time>, quando atinge um nível de
+        <data id="max-no2-val"></data>. Contudo, esse nível continua sob a faixa
+        "Regular", e é portanto aceitável.
       </p>
-      <script src="./visuals/no2.js"></script>
+      <script src="./visuals/no2.js" defer></script>
     </section>
     <section><hr></section>
     <section id="temp">
@@ -185,7 +190,7 @@
           </figcaption>
         </figure>
       </article>
-      <script src="./visuals/temperature.js"></script>
+      <script src="./visuals/temperature.js" defer></script>
     </section>
     <section><hr></section>
     <section id="dew">
@@ -210,7 +215,7 @@
         <!-- Tpo ~ T - (100 - UR)/5 -->
         <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3adc6a8c559515b7b02790f7364fdab20eeb6554">
         <figcaption>
-          Aproximação da fórmula de Magnus.
+          Aproximação da equação de Arden Buck.
         </figcaption>
       </figure>
       <p>
@@ -222,7 +227,8 @@
         </ul>
         Possuímos, pelas análises, tanto a temperatura do ar, quanto a umidade
         relativa. Portanto, podemos calcular o ponto de orvalho para um dado
-        instante de tempo:
+        instante de tempo. Aqui, temos as informações geradas a partir dos dados
+        da estação de Copacabana:
       </p>
       <h2> Ponto de orvalho, temperatura, pressão e umidade relativa </h2>
       <figure>
@@ -231,13 +237,122 @@
         <figcaption>
           Acima, comparação do ponto de orvalho com a temperatura (ambos medidos
           em °C); abaixo, umidade relativa do ar (em %) e pressão (em mbar).
+          Dados fornecidos pela estação de Copacabana.
         </figcaption>
       </figure>
       <p>
         Pelos gráficos, pode-se perceber como pressão e umidade relativa
         influenciam no ponto de orvalho.
       </p>
-      <script src="./visuals/dewpoint.js"></script>
+      <script src="./visuals/dewpoint.js" defer></script>
+    </section>
+    <section><hr></section>
+    <section id="rain">
+      <p>
+        A seguir, analisaremos locais em que houve chuva no dia de Natal (25 de
+        dezembro) de 2018.
+      </p>
+      <h2> Precipitação no Natal </h2>
+      <figure>
+        <div id="chart-rain"></div>
+        <figcaption>
+          Gráfico precipitação (em mm) por tempo, adquirido de análises
+          realizadas no dia 25 de dezembro de 2018.
+        </figcaption>
+      </figure>
+      <script src="./visuals/rain.js" defer></script>
+    </section>
+    <section><hr></section>
+    <section id="pm">
+      <p>
+        Material particulado (em inglês, <i lang="en">Particulate Matter</i> ou
+        PM) é o nome dado à matéria microscópica, seja ela sólida ou líquida,
+        suspensa no ar.
+      </p>
+      <blockquote cite="https://en.wikipedia.org/wiki/Particulates">
+        <p>
+          A Agência Internacional de Pesquisa em Câncer (AIPC) e a Organização
+          Mundial da Saúde (OMS) consideram material particulado como
+          cancerígenos de Grupo 1 – há evidência suficiente para concluir que
+          pode causar câncer em humanos. O material particulado é considerado a
+          pior forma de poluição do ar, por sua habilidade de penetrar
+          profundamente nos pulmões e corrente sanguínea não filtrado, causando
+          paradas cardíacas, doenças respiratórias e morte prematura.
+        </p>
+      </blockquote>
+      <p>
+        Partículas com diâmetro de 10 μm (1 μm = 0.001 mm) ou menos são chamadas
+        de PM<sub>10</sub>, enquanto que aquelas com diâmetro de 2.5 mícrons ou
+        menos são PM<sub>2.5</sub>. Para efeito de comparação, um fio de cabelo
+        humano tem por volta de 75 mícrons de diâmetro – aproximadamente o mesmo
+        tamanho de 30 PM<sub>2.5</sub>.
+      </p>
+      <p>
+        Um estudo realizado em 2013 envolvendo 312.944 pessoas em nove países
+        europeus revelou que, para cada aumento de 10 μg/m<sup>3</sup> em
+        PM<sub>10</sub>, a taxa de câncer de pulmão aumentou em 22%.
+        PM<sub>2.5</sub> foram particularmente fatais, com aumento de 36% em
+        câncer de pulmão por 10 μg/m<sup>3</sup>.
+      </p>
+      <p>
+        Para finalizar, apesar de nenhum nível ser considerado "seguro", a OMS
+        recomenda que a média diária de PM<sub>10</sub> seja mantida abaixo de
+        50 μg/m<sup>3</sup>, enquanto que a média dária de PM<sub>2.5</sub> seja
+        mantida abaixo de 25 μg/m<sup>3</sup>.
+        <sup>
+          <cite>[<a
+href="https://www.who.int/news-room/fact-sheets/detail/ambient-(outdoor)-air-quality-and-health"
+rel="noreferrer" target="_blank">WHO</a>]</cite>
+        </sup>
+      </p>
+      <h2> Material particulado ao fim de 2013, comparado ao fim de 2018 </h2>
+      <figure>
+        <div id="chart-2013-pm"></div>
+        <figcaption>
+          Gráfico das medições, em μg/m<sup>3</sup>, de PM<sub>10</sub> e
+          PM<sub>2.5</sub> na estação de Irajá, do início do dia 26/12/2013 ao
+          final do dia 31/12/2012.
+        </figcaption>
+      </figure>
+      <figure>
+        <div id="chart-2018-pm"></div>
+        <figcaption>
+          Gráfico das medições, em μg/m<sup>3</sup>, de PM<sub>10</sub> e
+          PM<sub>2.5</sub> na estação de Irajá, do início do dia 26/12/2018 ao
+          final do dia 31/12/2018.
+        </figcaption>
+      </figure>
+      <p>
+        Para o intervalo de 5 dias, a média diária, no ano de 2013, foi de:
+      </p>
+      <ul>
+        <li>
+          Para PM<sub>10</sub>: <data id="avg-pm10-2013-val"></data> (de 50)
+          μg/m<sup>3</sup>
+        </li>
+        <li>
+          Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2013-val"></data> (de 25)
+          μg/m<sup>3</sup>
+        </li>
+      </ul>
+      <p>
+        No ano de 2018, a média diária pelo mesmo intervalo foi de:
+      </p>
+      <ul>
+        <li>
+          Para PM<sub>10</sub>: <data id="avg-pm10-2018-val"></data> (de 50)
+          μg/m<sup>3</sup>
+        </li>
+        <li>
+          Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2018-val"></data> (de 25)
+          μg/m<sup>3</sup>
+        </li>
+      </ul>
+      <p>
+        Percebe-se uma melhora significativa na qualidade do ar no ano de 2018
+        quando comparado ao ano de 2013.
+      </p>
+      <script src="./visuals/pm.js" defer></script>
     </section>
   </main>
   <footer>

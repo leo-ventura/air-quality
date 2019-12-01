@@ -1,20 +1,20 @@
 const $chart_dewpoint = document.getElementById("chart-dewpoint");
 const $chart_relhum = document.getElementById("chart-relhum");
-get("/analise?estacaoCodigo=1", function() {
+get("/analise?minData=2017-06&estacaoCodigo=1", function() {
   if(ok(this.status)) {
-    const data = JSON.parse(this.response).slice(-50);
+    const data = JSON.parse(this.response).slice(-100);
 
     const times = data.map(e => e.Data_e_hora);
 
     const dewpoints = data.map(v => {
       if(!v.Temperatura || !v.UmidadeRelativaDoAr) return null;
-      // Magnus formula approximation
+      // Arden Buck equation approximation
       const mag = v.Temperatura - (100 - v.UmidadeRelativaDoAr) / 5;
       return round(mag,4);
     }).filter(e => !!e);
     const temperatures = data.map(e => round(e.Temperatura,4));
     const pressure = data.map(e => round(e.Pressao,4));
-    
+
     const dew_chart = new ApexCharts($chart_dewpoint, {
       chart: {
         type: "area",
@@ -67,7 +67,7 @@ get("/analise?estacaoCodigo=1", function() {
       colors: [ "#faa300", "#22Aed1" ],
       fill: gradientConfig,
       series: [{
-        name: "Pressão",
+        name: "Pressão atmosférica",
         data: [...pressure]
       },{
         name: "Umidade relativa",
@@ -78,8 +78,8 @@ get("/analise?estacaoCodigo=1", function() {
         categories: [ ...times ]
       },
       yaxis: [{
-        max: 1015,
-        min: 1005,
+        max: 1040,
+        min: 1020,
         labels: {
           formatter: (value) => `${value} mbar`
         },

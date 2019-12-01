@@ -4,7 +4,7 @@ const temperature_data = {};
 // Get the max and min temperature reading
 for(const par of ["max", "min"]) {
   get(`/${par}?tabela=Analise&coluna=Temperatura`, function() {
-    if(this.status >= 200 && this.status < 400) {
+    if(ok(this.status)) {
       const data = JSON.parse(this.response);
       document.getElementById(`${par}-temp-val`).textContent = `${data[par]}`;
       temperature_data[par] = data[par];
@@ -35,7 +35,7 @@ for(const par of ["max", "min"]) {
 }
 // Get average temperature
 get("/avg?tabela=Analise&coluna=Temperatura", function() {
-  if(this.status >= 200 && this.status < 400) {
+  if(ok(this.status)) {
     const data = JSON.parse(this.response);
 
     // Add fetched value to text

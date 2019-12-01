@@ -105,6 +105,9 @@ hr {
   width: 2em;
   margin: auto;
 }
+var {
+  font-family: serif;
+}
 .side-by-side {
   display: flex;
 }
