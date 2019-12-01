@@ -67,7 +67,7 @@ get("/analise?minData=2017-06&estacaoCodigo=1", function() {
       colors: [ "#faa300", "#22Aed1" ],
       fill: gradientConfig,
       series: [{
-        name: "Pressão",
+        name: "Pressão atmosférica",
         data: [...pressure]
       },{
         name: "Umidade relativa",

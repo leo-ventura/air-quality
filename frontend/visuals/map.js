@@ -1,5 +1,3 @@
-const API = "http://bd.amendo.im:8081/api";
-
 // Create the map
 const map = L.map("map").setView([-22.8879,-43.4711], 10);
 

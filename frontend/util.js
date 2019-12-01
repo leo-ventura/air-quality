@@ -1,3 +1,5 @@
+const API = "http://bd.amendo.im:8081/api";
+
 const preventZoomConfig = {
   tools: {
     zoom: false,
@@ -19,7 +21,6 @@ const gradientConfig = {
 };
 
 function get(url,callback) {
-  if(!NET) return;
   const request = new XMLHttpRequest();
   request.open("GET", API+url, true);
   request.onload = callback;
@@ -76,8 +77,8 @@ function plotIQAR(data,element,x,y,series_name,colors) {
       show: true,
       format: "HH:mm – dd/MM/yyyy",
     }},
-    colors: colors,
     dataLabels: { enabled: false },
+    colors: colors,
     fill: gradientConfig,
     series: [{
       name: series_name,

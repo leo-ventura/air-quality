@@ -1,5 +1,5 @@
 const $chart_rain = document.getElementById("chart-rain");
-get("/analise?minData=2018-12-25&maxData=2018-12-26&minChuva=0.001", function() {
+get("/analise?minData=2018-12-25&maxData=2018-12-26&minChuva=0", function() {
   if(ok(this.status)) {
     const data = JSON.parse(this.response).slice(-50);
 
