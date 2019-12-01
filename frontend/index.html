@@ -18,6 +18,12 @@
 <body>
   <!-- Utilities -->
   <script src="./util.js"></script>
+  <div hidden>
+    <!-- Arrow up SVG for "back to top" links -->
+    <svg>
+      <path id="arrow-up" d="M12,7L17,12H14V16H10V12H7L12,7M12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20Z" />
+    </svg>
+  </div>
   <header>
     <h1> Análise da Qualidade do Ar </h1>
     <p class="subtitle">
@@ -167,6 +173,9 @@
         "Regular", e é portanto aceitável.
       </p>
       <script src="./visuals/no2.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
     </section>
     <section><hr></section>
     <section id="temp">
@@ -205,6 +214,9 @@
         </figure>
       </article>
       <script src="./visuals/temperature.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
     </section>
     <section><hr></section>
     <section id="dew">
@@ -259,6 +271,11 @@
         influenciam no ponto de orvalho.
       </p>
       <script src="./visuals/dewpoint.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo">
+          <svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg>
+        </a>
+      </p>
     </section>
     <section><hr></section>
     <section id="rain">
@@ -275,6 +292,9 @@
         </figcaption>
       </figure>
       <script src="./visuals/rain.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
     </section>
     <section><hr></section>
     <section id="pm">
@@ -336,37 +356,46 @@ rel="noreferrer" target="_blank">WHO</a>]</cite>
           final do dia 31/12/2018.
         </figcaption>
       </figure>
-      <p>
-        Para o intervalo de 5 dias, a média diária, no ano de 2013, foi de:
-      </p>
-      <ul>
-        <li>
-          Para PM<sub>10</sub>: <data id="avg-pm10-2013-val"></data> (de 50)
-          μg/m<sup>3</sup>
-        </li>
-        <li>
-          Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2013-val"></data> (de 25)
-          μg/m<sup>3</sup>
-        </li>
-      </ul>
-      <p>
-        No ano de 2018, a média diária pelo mesmo intervalo foi de:
-      </p>
-      <ul>
-        <li>
-          Para PM<sub>10</sub>: <data id="avg-pm10-2018-val"></data> (de 50)
-          μg/m<sup>3</sup>
-        </li>
-        <li>
-          Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2018-val"></data> (de 25)
-          μg/m<sup>3</sup>
-        </li>
-      </ul>
+      <article class="side-by-side-big">
+        <div>
+          <p>
+            Para o intervalo de 5 dias, a média diária, no ano de 2013, foi de:
+          </p>
+          <ul>
+            <li>
+              Para PM<sub>10</sub>: <data id="avg-pm10-2013-val"></data> (de 50)
+              μg/m<sup>3</sup>
+            </li>
+            <li>
+              Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2013-val"></data> (de 25)
+              μg/m<sup>3</sup>
+            </li>
+          </ul>
+        </div>
+        <div>
+          <p>
+            No ano de 2018, a média diária pelo mesmo intervalo foi de:
+          </p>
+          <ul>
+            <li>
+              Para PM<sub>10</sub>: <data id="avg-pm10-2018-val"></data> (de 50)
+              μg/m<sup>3</sup>
+            </li>
+            <li>
+              Para PM<sub>2.5</sub>: <data id="avg-pm2_5-2018-val"></data> (de 25)
+              μg/m<sup>3</sup>
+            </li>
+          </ul>
+        </div>
+      </article>
       <p>
         Percebe-se uma melhora significativa na qualidade do ar no ano de 2018
         quando comparado ao ano de 2013.
       </p>
       <script src="./visuals/pm.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
     </section>
     <section><hr></section>
     <section id="irradiance">
@@ -427,6 +456,9 @@ rel="noreferrer" target="_blank">WHO</a>]</cite>
         </figcaption>
       </figure>
       <script src="./visuals/solar.js"></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
     </section>
   </main>
   <footer>

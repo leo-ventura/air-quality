@@ -52,7 +52,7 @@ figure {
 figcaption {
   text-align: center;
   font-style: italic;
-  color: #9090a0;
+  color: #72728d;
   font-size: 85%;
 }
 :root { counter-reset: figcounter; }
@@ -108,11 +108,30 @@ hr {
 var {
   font-family: serif;
 }
-.side-by-side {
+[hidden] {
+  display: none;
+  visibility: hidden;
+}
+.side-by-side, .side-by-side-big {
   display: flex;
+}
+.side-by-side-big div {
+  margin: 1em;
 }
 .center {
   text-align: center;
+}
+.back-to-top {
+  text-align: right;
+  margin: 0;
+  height: 0;
+}
+.back-to-top svg {
+  fill: #72728d;
+  width: 2em;
+}
+.back-to-top svg:hover {
+  fill: #1a1a1a;
 }
 #map {
   height: 400px;
@@ -131,6 +150,9 @@ var {
   }
   section {
     margin-bottom: 2.5em;
+  }
+  .side-by-side-big {
+    display: block;
   }
   #map {
     height: 300px;
