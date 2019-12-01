@@ -150,6 +150,8 @@ def get_analises():
 def get_analise():
     logger.info(f'Buscando informações de sobre um grupo de análises')
 
+    count = request.args.get("count")
+
     # Test equality
     analise_id          = request.args.get("id")
     CO                  = request.args.get("CO")
@@ -313,8 +315,13 @@ def get_analise():
 
     logger.debug(f'Query: {query}')
 
-    data = query.limit(LIMIT).all()
-    data = [d.format() for d in data]
+    if count == "true":
+        data = {
+            "count": len(query.all())
+        }
+    else:
+        data = query.limit(LIMIT).all()
+        data = [d.format() for d in data]
 
     logger.debug(f'Quantidade de análises: {len(data)}')
 
@@ -339,12 +346,30 @@ def get_todas_qualidade_do_ar():
 def get_qualidade_do_ar():
     logger.info("Buscando informações sobre qualidade do ar filtradas por colunas")
 
+    count = request.args.get("count")
+
     ID = request.args.get("id")
     IQAR = request.args.get("iqar")
     Data = request.args.get("data")
     Poluente = request.args.get("poluente")
     Classificacao = request.args.get("classificacao")
     SiglaLocalEstacao = request.args.get("siglaLocalEstacao")
+
+    # min
+    minID = request.args.get("minId")
+    minIQAR = request.args.get("minIqar")
+    minData = request.args.get("minData")
+    minPoluente = request.args.get("minPoluente")
+    minClassificacao = request.args.get("minClassificacao")
+    minSiglaLocalEstacao = request.args.get("minSiglaLocalEstacao")
+
+    # max
+    maxID = request.args.get("maxId")
+    maxIQAR = request.args.get("maxIqar")
+    maxData = request.args.get("maxData")
+    maxPoluente = request.args.get("maxPoluente")
+    maxClassificacao = request.args.get("maxClassificacao")
+    maxSiglaLocalEstacao = request.args.get("maxSiglaLocalEstacao")
 
     session = get_session()
 
@@ -363,8 +388,41 @@ def get_qualidade_do_ar():
     if SiglaLocalEstacao is not None:
         query = query.filter(QualidadeDoAr.SiglaLocalEstacao == SiglaLocalEstacao)
 
+    # min
+    if minID is not None:
+        query = query.filter(QualidadeDoAr.ID > minID)
+    if minIQAR is not None:
+        query = query.filter(QualidadeDoAr.IQAR > minIQAR)
+    if minData is not None:
+        query = query.filter(QualidadeDoAr.Data > minData)
+    if minPoluente is not None:
+        query = query.filter(QualidadeDoAr.Poluente > minPoluente)
+    if minClassificacao is not None:
+        query = query.filter(QualidadeDoAr.Classificacao > minClassificacao)
+    if minSiglaLocalEstacao is not None:
+        query = query.filter(QualidadeDoAr.SiglaLocalEstacao > minSiglaLocalEstacao)
+
+    # max
+    if maxID is not None:
+        query = query.filter(QualidadeDoAr.ID < maxID)
+    if maxIQAR is not None:
+        query = query.filter(QualidadeDoAr.IQAR < maxIQAR)
+    if maxData is not None:
+        query = query.filter(QualidadeDoAr.Data < maxData)
+    if maxPoluente is not None:
+        query = query.filter(QualidadeDoAr.Poluente < maxPoluente)
+    if maxClassificacao is not None:
+        query = query.filter(QualidadeDoAr.Classificacao < maxClassificacao)
+    if maxSiglaLocalEstacao is not None:
+        query = query.filter(QualidadeDoAr.SiglaLocalEstacao < maxSiglaLocalEstacao)
+
     data = query.all()
-    data = [d.format() for d in data]
+    if count == "true":
+        data = {
+            "count": len(data)
+        }
+    else:
+        data = [d.format() for d in data]
 
     session.close()
 
@@ -387,10 +445,12 @@ def get_zonas():
 def get_zona():
     logger.info(f'Buscando informações sobre zona')
 
-    Zona_id = request.args.get("zona_id")
-    Nome = request.args.get("nome")
-    Raio = request.args.get("raio")
-    Latitude = request.args.get("latitude")
+    count = request.args.get("count")
+
+    Zona_id   = request.args.get("zona_id")
+    Nome      = request.args.get("nome")
+    Raio      = request.args.get("raio")
+    Latitude  = request.args.get("latitude")
     Longitude = request.args.get("longitude")
 
     logger.debug(f'Filtros: {Zona_id} {Nome} {Raio} {Latitude} {Longitude}')
@@ -413,7 +473,12 @@ def get_zona():
     logger.debug(f'Query: {str(query)}')
 
     data = query.all()
-    data = [d.format() for d in data]
+    if count == "true":
+        data = {
+            "count": len(data)
+        }
+    else:
+        data = [d.format() for d in data]
 
     session.close()
 
