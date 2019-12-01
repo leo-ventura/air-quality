@@ -31,7 +31,7 @@ if __name__ == "__main__":
     @app.errorhandler(Exception)
     def handle_unhandled_exception(e):
         app.logger.exception(e)
-        return "Ops, something went wrong..", 500
+        return f'Acesse <a href="http://bd.amendo.im:8081/api/">/api/</a> para mais informações sobre como usar a API', 500
 
     app.register_blueprint(endpointBlueprint, url_prefix="/api")
 
