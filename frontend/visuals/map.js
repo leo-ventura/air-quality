@@ -42,10 +42,16 @@ function plotStationsToMap(data) {
   });
 }
 
+const zones = {};
 function plotZonesToMap(data) {
   data.reverse().forEach(e => {
     const center = [e.Latitude, e.Longitude];
     L.circle(center, {radius: e.Raio}).addTo(map)
       .bindPopup(`<b>${xss(e.Nome)}</b>`);
+    zones[e.Zona_id] = {
+      name: e.Nome,
+      coord: center,
+      radius: e.Raio
+    };
   });
 }
