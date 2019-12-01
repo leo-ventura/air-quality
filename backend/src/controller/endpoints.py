@@ -495,6 +495,8 @@ def get_tags():
 
     logger.debug(data)
 
+    session.close()
+
     return jsonify(data)
 
 @blueprint.route("/tag", methods=['GET'])
@@ -551,6 +553,8 @@ def get_avg():
         "avg": data,
     }
 
+    session.close()
+
     return jsonify(data)
 
 @blueprint.route("/max", methods=['GET'])
@@ -576,6 +580,8 @@ def get_max():
     data = {
         "max": data,
     }
+
+    session.close()
 
     return jsonify(data)
 
@@ -603,5 +609,7 @@ def get_min():
     data = {
         "min": data,
     }
+
+    session.close()
 
     return jsonify(data)
