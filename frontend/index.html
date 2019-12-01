@@ -37,7 +37,7 @@
       <script src="./visuals/map.js" defer></script>
     </section>
     <section>
-      <fieldset>
+      <fieldset id="toc">
         <legend> Sumário </legend>
         <nav>
           <ol>
@@ -69,6 +69,17 @@
             </li>
             <li>
               <a href="#pm">Material particulado</a>
+            </li>
+            <li>
+              Radiação solar
+              <ol>
+                <li>
+                  <a href="#irradiance">Irradiância</a>
+                </li>
+                <li>
+                  <a href="#illuminance">Iluminância</a>
+                </li>
+              </ol>
             </li>
           </ol>
         </nav>
@@ -180,7 +191,10 @@
           <dt> Temperatura média </dt>
           <dd>
             A temperatura média de todas as análises, indicada ao lado em preto,
-            é de (a&shy;pro&shy;xi&shy;ma&shy;da&shy;men&shy;te) <data id="avg-temp-val"></data>&nbsp;°C.
+            é de (a&shy;pro&shy;xi&shy;ma&shy;da&shy;men&shy;te)
+            <data id="avg-temp-val"></data>&nbsp;°C.<br>
+            A título de curiosidade, a temperatura foi registrada sendo igual à
+            média <data id="avg-temp-count"></data> vezes.
           </dd>
         </dl>
         <figure>
@@ -213,7 +227,7 @@
       </p>
       <figure class="center">
         <!-- Tpo ~ T - (100 - UR)/5 -->
-        <img src="https://wikimedia.org/api/rest_v1/media/math/render/svg/3adc6a8c559515b7b02790f7364fdab20eeb6554">
+        <img style="height:3em" src="./img/dewpoint.png">
         <figcaption>
           Aproximação da equação de Arden Buck.
         </figcaption>
@@ -353,6 +367,66 @@ rel="noreferrer" target="_blank">WHO</a>]</cite>
         quando comparado ao ano de 2013.
       </p>
       <script src="./visuals/pm.js" defer></script>
+    </section>
+    <section><hr></section>
+    <section id="irradiance">
+      <p>
+        <dfn>Irradiância</dfn> é a medição de potência por unidade de área. Não
+        se deve confundí-la com <dfn>irradiação</dfn>, que é obtida integrando a
+        irradiância por um período de tempo.
+      </p>
+      <p>
+        A irradiância solar é comumente medida em W/m<sup>2</sup>. Abaixo,
+        analisamos a variação da irradiância solar em um período de três dias,
+        entre 20 e 23 de março de 2012, como detectado pela estação de Campo
+        Grande.
+      </p>
+      <p>
+        O pico de <data>1864.67</data> W/m<sup>2</sup> é, na realidade, a maior
+        medição de irradiância solar presente nos dados analisados.
+      </p>
+      <h2>Irradiância solar</h2>
+      <figure>
+        <div id="chart-solar"></div>
+        <figcaption>
+          Gráfico da irradiação solar por tempo, medida do início do dia
+          20/03/2012 ao final do dia 22/03/2012 na estação de Campo Grande. Por
+          motivos óbvios, os picos estão na parte do dia, enquanto que, à noite,
+          não há irradiância.
+        </figcaption>
+      </figure>
+    </section>
+    <section id="illuminance">
+      <p>
+        A unidade de iluminância, <dfn>lux</dfn> (lx), é a medida de fluxo
+        luminoso por unidade de área, definido em termos de lumen por metro
+        quadrado (lm/m<sup>2</sup>). Para obtermos um resultado em lux,
+        podemos multiplicar a <dfn>eficácia luminosa</dfn> (lm/W) pela
+        irradiância (W/m<sup>2</sup>).
+      </p>
+      <figure class="center">
+        <img style="height:3em" src="./img/lux.png">
+        <figcaption>
+          Definição da unidade lux como resultado de irradiância &times;
+          eficácia luminosa.
+        </figcaption>
+      </figure>
+      <p>
+        Sabemos que o Sol possui uma eficácia luminosa de 93 lm/W. Portanto,
+        é trivial construir o gráfico de iluminância solar de um dado intervalo
+        de tempo.
+      </p>
+      <h2>Iluminância solar</h2>
+      <figure>
+        <div id="chart-lux"></div>
+        <figcaption>
+          Gráfico da iluminância solar por tempo, calculada a partir dos dados
+          medidos do início do dia 20/03/2012 ao final do dia 22/03/2012, na
+          estação de Campo Grande. Devido à maneira como iluminância é calculada,
+          o gráfico resultante é virtualmente idêntico ao gráfico de irradiância.
+        </figcaption>
+      </figure>
+      <script src="./visuals/solar.js"></script>
     </section>
   </main>
   <footer>
