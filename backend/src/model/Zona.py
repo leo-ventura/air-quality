@@ -4,7 +4,6 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from src.model.base import Base
 from src.model.EstacaoZona import EstacaoZona
-import json
 
 class Zona(Base):
     __tablename__ = 'Zona'

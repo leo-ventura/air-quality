@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
-from sqlalchemy import Column, String, Integer, Float, ForeignKey
+from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from src.model.base import Base
-import json
 
 class Tag(Base):
     __tablename__ = 'Tag'

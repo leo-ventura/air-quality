@@ -3,7 +3,6 @@ from sqlalchemy import Table, Column, ForeignKey, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from src.model.base import Base
-import json
 
 EstacaoZona = Table('EstacaoZona', Base.metadata,
     Column('EstacaoCodigo', Integer, ForeignKey('Estacao.Codigo')),
