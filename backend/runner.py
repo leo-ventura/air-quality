@@ -7,6 +7,7 @@ import sys
 
 from flask import Flask
 from src.util import logger
+from waitress import serve
 from flask_cors import CORS
 
 '''
@@ -34,4 +35,6 @@ if __name__ == "__main__":
 
     app.register_blueprint(endpointBlueprint, url_prefix="/api")
 
-    app.run(port=8081, host="0.0.0.0")
+    # app.run(port=8081, host="0.0.0.0")
+    # using waitress instead of flask's default development server
+    serve(app, host='0.0.0.0', port=8081)
