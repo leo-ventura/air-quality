@@ -6,7 +6,7 @@ CREATE TABLE `Estacao` (
   `NomeEstacao` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`Codigo`),
   UNIQUE KEY `Estacao_UN` (`SiglaLocal`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+);
 
 CREATE TABLE `Analise` (
   `Analise_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -29,7 +29,7 @@ CREATE TABLE `Analise` (
   PRIMARY KEY (`Analise_id`),
   KEY `Analise_FK` (`EstacaoCodigo`),
   CONSTRAINT `Analise_FK` FOREIGN KEY (`EstacaoCodigo`) REFERENCES `Estacao` (`Codigo`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=516976 DEFAULT CHARSET=latin1
+);
 
 CREATE TABLE `QualidadeDoAr` (
   `ID` int(11) NOT NULL,
@@ -41,7 +41,7 @@ CREATE TABLE `QualidadeDoAr` (
   PRIMARY KEY (`ID`),
   KEY `QualidadeDoAr_FK` (`SiglaLocalEstacao`),
   CONSTRAINT `QualidadeDoAr_FK` FOREIGN KEY (`SiglaLocalEstacao`) REFERENCES `Estacao` (`SiglaLocal`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+);
 
 CREATE TABLE `Zona` (
   `Zona_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -50,13 +50,16 @@ CREATE TABLE `Zona` (
   `Longitude` decimal(15,10) DEFAULT NULL,
   `Raio` decimal(15,10) DEFAULT NULL,
   PRIMARY KEY (`Zona_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1
+);
 
 CREATE TABLE `Tag` (
   `Tag_id` int(11) NOT NULL AUTO_INCREMENT,
   `Tag` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`Tag_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1
+  `Zona_id` int(11) NOT NULL,
+  PRIMARY KEY (`Tag_id`),
+  KEY `Tag_FK` (`Zona_id`),
+  CONSTRAINT `Tag_FK` FOREIGN KEY (`Zona_id`) REFERENCES `Zona` (`Zona_id`)
+);
 
 CREATE TABLE `EstacaoZona` (
   `EstacaoCodigo` int(11) NOT NULL,
@@ -65,13 +68,4 @@ CREATE TABLE `EstacaoZona` (
   KEY `EstacaoZona_FK_1` (`Zona_id`),
   CONSTRAINT `EstacaoZona_FK` FOREIGN KEY (`EstacaoCodigo`) REFERENCES `Estacao` (`Codigo`) ON UPDATE CASCADE,
   CONSTRAINT `EstacaoZona_FK_1` FOREIGN KEY (`Zona_id`) REFERENCES `Zona` (`Zona_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
-
-CREATE TABLE `ZonaTag` (
-  `Zona_id` int(11) NOT NULL,
-  `Tag_id` int(11) NOT NULL,
-  PRIMARY KEY (`Zona_id`,`Tag_id`),
-  KEY `ZonaTag_FK_1` (`Tag_id`),
-  CONSTRAINT `ZonaTag_FK` FOREIGN KEY (`Zona_id`) REFERENCES `Zona` (`Zona_id`) ON UPDATE CASCADE,
-  CONSTRAINT `ZonaTag_FK_1` FOREIGN KEY (`Tag_id`) REFERENCES `Tag` (`Tag_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1
+);
