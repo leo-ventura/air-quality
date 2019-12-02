@@ -115,8 +115,9 @@ var {
 .side-by-side, .side-by-side-big {
   display: flex;
 }
-.side-by-side-big div {
-  margin: 1em;
+.side-by-side-big > figure > div {
+  margin: auto;
+  max-width: 50%;
 }
 .center {
   text-align: center;
@@ -153,6 +154,13 @@ var {
   }
   .side-by-side-big {
     display: block;
+  }
+  .side-by-side-big > figure > div {
+    margin: auto;
+    max-width: unset;
+  }
+  .side-by-side-big > figure > div > div {
+    margin: auto;
   }
   #map {
     height: 300px;

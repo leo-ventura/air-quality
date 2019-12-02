@@ -52,12 +52,12 @@
               <ol>
                 <li>
                   <a href="#tijuca-o3">
-                    IQAR para poluente O<sub>3</sub>, na Tijuca
+                    IQAR para poluente O<sub>3</sub>
                   </a>
                 </li>
                 <li>
                   <a href="#tijuca-no2">
-                    IQAR para poluente NO<sub>2</sub>, na Tijuca
+                    IQAR para poluente NO<sub>2</sub>
                   </a>
                 </li>
               </ol>
@@ -86,6 +86,9 @@
                   <a href="#illuminance">Iluminância</a>
                 </li>
               </ol>
+            </li>
+            <li>
+              <a href="#wind">Direção do vento</a>
             </li>
           </ol>
         </nav>
@@ -455,7 +458,46 @@ rel="noreferrer" target="_blank">WHO</a>]</cite>
           o gráfico resultante é virtualmente idêntico ao gráfico de irradiância.
         </figcaption>
       </figure>
-      <script src="./visuals/solar.js"></script>
+      <script src="./visuals/solar.js" defer></script>
+      <p class="back-to-top">
+        <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
+      </p>
+    </section>
+    <section><hr></section>
+    <section id="wind">
+      <p>
+        Podemos analisar a tendência da direção do vento somando as velocidades
+        detectadas para as respectivas direções, e colocando em um gráfico
+        radial. Aqui, vemos dados registrados pela estação de Pedra de Guaratiba.
+      </p>
+      <h2>Direção do vento, julho de 2017 e 2018</h2>
+      <article class="side-by-side-big">
+        <figure>
+          <div id="chart-wind-2017"></div>
+          <figcaption>
+            Gráfico representando as direções das velocidades acumuladas do
+            vento, as quais foram registradas em julho de 2017 pela estação de
+            Pedra de Guaratiba.
+          </figcaption>
+        </figure>
+        <figure>
+          <div id="chart-wind-2018"></div>
+          <figcaption>
+            Gráfico representando as direções das velocidades acumuladas do
+            vento, as quais foram registradas em julho de 2018 pela estação de
+            Pedra de Guaratiba.
+          </figcaption>
+        </figure>
+      </article>
+      <p>
+        Ambos os gráficos acima representam medições realizadas na primeira
+        semana de julho, de 2017 e 2018 respectivamente.
+      </p>
+      <p>
+        Percebe-se que o vento tende a ir na direção leste-oeste neste período
+        do ano, mas não tanto na direção norte-sul.
+      </p>
+      <script src="./visuals/wind.js" defer></script>
       <p class="back-to-top">
         <a href="#toc" title="Voltar ao topo"><svg viewBox="0 0 24 24"><use href="#arrow-up"/></svg></a>
       </p>
