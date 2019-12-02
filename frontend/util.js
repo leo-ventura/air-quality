@@ -40,7 +40,7 @@ function ok(status) {
 
 function round(num,dec=2) {
   const val = 10**dec;
-  return ~~(num*val)/val;
+  return Math.round(num*val)/val;
 }
 
 function prettifyDate(str) {

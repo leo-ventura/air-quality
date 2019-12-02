@@ -37,9 +37,20 @@ for(const par of ["max", "min"]) {
 get("/avg?tabela=Analise&coluna=Temperatura", function() {
   if(ok(this.status)) {
     const data = JSON.parse(this.response);
+    const avg = round(data.avg,2);
 
     // Add fetched value to text
-    document.getElementById("avg-temp-val").textContent = round(data.avg,4);
+    document.getElementById("avg-temp-val").textContent = avg;
+
+    // Check how many times the temperature was exactly the (rounded) average
+    get(`/analise?temperatura=${avg}&count=true`, function() {
+      if(ok(this.status)) {
+        const data = JSON.parse(this.response);
+
+        // Add fetched value to text
+        document.getElementById("avg-temp-count").textContent = data.count;
+      }
+    });
 
     // Save average value for plotting
     temperature_data.avg = data.avg;

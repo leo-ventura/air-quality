@@ -18,7 +18,6 @@ for(const y of [2013,2018]) {
       document.getElementById(`avg-pm10-${y}-val`).textContent = round(pm10_avg,4);
       document.getElementById(`avg-pm2_5-${y}-val`).textContent = round(pm2_5_avg,4);
 
-      // apexcharts.com/docs/
       const pm_chart = new ApexCharts(document.getElementById(`chart-${y}-pm`), {
         chart: { type: "area", toolbar: preventZoomConfig, height: 250,
         animations: { enabled: false }},

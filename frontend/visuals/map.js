@@ -21,11 +21,25 @@ get("/estacoes", function() {
   }
 });
 
-// Get zone data
-get("/zonas", function() {
+const tags = [];
+// Get tag data
+get("/tags", function() {
   if(ok(this.status)) {
-    const data = JSON.parse(this.response);
-    plotZonesToMap(data);
+    const res = JSON.parse(this.response);
+    res.forEach(t => {
+      tags.push({
+        name: t.Tag,
+        zone: t.Zona_id
+      });
+    });
+
+    // Then, get zone data
+    get("/zonas", function() {
+      if(ok(this.status)) {
+        const data = JSON.parse(this.response);
+        plotZonesToMap(data);
+      }
+    });
   }
 });
 
@@ -46,8 +60,17 @@ const zones = {};
 function plotZonesToMap(data) {
   data.reverse().forEach(e => {
     const center = [e.Latitude, e.Longitude];
+
+    const buf = [];
+    tags.forEach(t => {
+      if(+t.zone === +e.Zona_id)
+        buf.push(`Tag: ${t.name}`);
+    });
+
     L.circle(center, {radius: e.Raio}).addTo(map)
-      .bindPopup(`<b>${xss(e.Nome)}</b>`);
+      .bindPopup(`<b>${xss(e.Nome)}</b><br>${
+        buf.join("<br>")
+      }`);
     zones[e.Zona_id] = {
       name: e.Nome,
       coord: center,
